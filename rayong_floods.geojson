@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
  "name": "rayong_floods",
- "generated_at": "2026-09-29T19:13:01+07:00",
+ "generated_at": "2026-09-29T20:26:16+07:00",
  "bbox": [
   100.9844476,
   12.2159732,
@@ -9,38 +9,6 @@
   13.1635573
  ],
  "features": [
-  {
-   "type": "Feature",
-   "id": "inc-e2e01-ban-khai-municipality-front",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     101.2968526,
-     12.7834362
-    ]
-   },
-   "properties": {
-    "incident_id": "inc-e2e01-ban-khai-municipality-front",
-    "title": "น้ำไหลแรง หน้าเทศบาลตำบลบ้านค่าย",
-    "status": "active",
-    "severity": "unknown",
-    "passability": "unknown",
-    "last_reported_at": "2026-09-28T19:38:35+07:00",
-    "first_reported_at": "2026-09-28T19:38:35+07:00",
-    "independent_report_count": 1,
-    "repost_count": 0,
-    "evidence_urls": [
-     "https://x.com/joeeth69/status/2104551342589219239"
-    ],
-    "evidence_visibility": "public",
-    "private_evidence_count": 0,
-    "location_text": "จุดหน้าเทศบาล ต.บ้านค่าย จ.ระยอง",
-    "precision": "subdistrict",
-    "geocode_source": "rayong-osm-n1747791265",
-    "marker_color": "#757575",
-    "is_greyed": false
-   }
-  },
   {
    "type": "Feature",
    "id": "inc-e2e01-wat-koh-kloi-soi-mo-mayuri",
@@ -411,6 +379,70 @@
     "geocode_source": "nominatim:osm-node-7128975381",
     "marker_color": "#d32f2f",
     "is_greyed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "inc-1943-sukhumvit-wat-pluak-ket",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     101.3147889,
+     12.6606216
+    ]
+   },
+   "properties": {
+    "incident_id": "inc-1943-sukhumvit-wat-pluak-ket",
+    "title": "น้ำท่วม ถนนสุขุมวิท หน้าวัดปลวกเกตุ อ.เมือง",
+    "status": "active",
+    "severity": "unknown",
+    "passability": "unknown",
+    "last_reported_at": "2026-09-29T19:18:00+07:00",
+    "first_reported_at": "2026-09-29T19:18:00+07:00",
+    "independent_report_count": 0,
+    "repost_count": 1,
+    "evidence_urls": [
+     "https://www.facebook.com/ZoomRayong/posts/pfbid0qCkSwJTUvGL8yJv8b5L8McxXE9wRkKV7d8N7J6umQNgsp52eHEACABxjMYtUn45xl"
+    ],
+    "evidence_visibility": "public",
+    "private_evidence_count": 0,
+    "location_text": "ถนนสุขุมวิท หน้าวัดปลวกเกตุ อ.เมือง จ.ระยอง",
+    "precision": "point",
+    "geocode_source": "rayong-osm-n2751930266",
+    "marker_color": "#757575",
+    "is_greyed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "inc-e2e01-ban-khai-municipality-front",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     101.2968526,
+     12.7834362
+    ]
+   },
+   "properties": {
+    "incident_id": "inc-e2e01-ban-khai-municipality-front",
+    "title": "น้ำไหลแรง หน้าเทศบาลตำบลบ้านค่าย",
+    "status": "stale",
+    "severity": "unknown",
+    "passability": "unknown",
+    "last_reported_at": "2026-09-28T19:38:35+07:00",
+    "first_reported_at": "2026-09-28T19:38:35+07:00",
+    "independent_report_count": 1,
+    "repost_count": 0,
+    "evidence_urls": [
+     "https://x.com/joeeth69/status/2104551342589219239"
+    ],
+    "evidence_visibility": "public",
+    "private_evidence_count": 0,
+    "location_text": "จุดหน้าเทศบาล ต.บ้านค่าย จ.ระยอง",
+    "precision": "subdistrict",
+    "geocode_source": "rayong-osm-n1747791265",
+    "marker_color": "#9e9e9e",
+    "is_greyed": true
    }
   }
  ]

@@ -268,7 +268,7 @@
     // add OSM tiles only once the first view is settled, so we don't request (and then abort) province-view tiles
     function addTiles() { if (!map.hasLayer(tiles)) tiles.addTo(map); }
     setTimeout(addTiles, 4000);
-    map.createPane("approx"); map.getPane("approx").style.zIndex = 450;   // area circles below markers (markerPane = 600)
+    map.createPane("approx"); map.getPane("approx").style.zIndex = 380; map.getPane("approx").style.pointerEvents = "none";   // approximate-area circles: bottom-most and click-through, so smaller areas inside stay clickable (the centre dot keeps the popup)
     map.createPane("webUnverified"); map.getPane("webUnverified").style.zIndex = 390;   // unverified layer BELOW everything verified
 
     var layer = L.layerGroup().addTo(map);
@@ -383,10 +383,8 @@
           var area = L.circle(ll, {
             pane: "approx", radius: APPROX_RADIUS_M[p.precision],
             color: SEV_COLOR[sev], weight: 1.5, opacity: stale ? 0.35 : 0.6, dashArray: "4 6",
-            fillColor: SEV_COLOR[sev], fillOpacity: stale ? 0.06 : 0.13
+            fillColor: SEV_COLOR[sev], fillOpacity: stale ? 0.06 : 0.13, interactive: false
           });
-          area.bindTooltip(APPROX_LABEL, { direction: "top", sticky: true });
-          area.bindPopup(html, popOpts);
           newLayer.addLayer(area);
           bounds.extend(area.getLatLng().toBounds(APPROX_RADIUS_M[p.precision] * 2));
         } else {

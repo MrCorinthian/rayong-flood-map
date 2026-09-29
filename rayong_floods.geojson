@@ -1,0 +1,306 @@
+{
+  "type": "FeatureCollection",
+  "name": "rayong_floods",
+  "generated_at": "2026-09-29T09:49:51+07:00",
+  "bbox": [
+    100.9844476,
+    12.2159732,
+    101.8310549,
+    13.1635573
+  ],
+  "features": [
+    {
+      "type": "Feature",
+      "id": "inc-e2e01-ban-khai-municipality-front",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          101.2968526,
+          12.7834362
+        ]
+      },
+      "properties": {
+        "incident_id": "inc-e2e01-ban-khai-municipality-front",
+        "title": "น้ำไหลแรง หน้าเทศบาลตำบลบ้านค่าย",
+        "status": "active",
+        "severity": "unknown",
+        "passability": "unknown",
+        "last_reported_at": "2026-09-28T19:38:35+07:00",
+        "first_reported_at": "2026-09-28T19:38:35+07:00",
+        "independent_report_count": 1,
+        "repost_count": 0,
+        "evidence_urls": [
+          "https://x.com/joeeth69/status/2104551342589219239"
+        ],
+        "evidence_visibility": "public",
+        "private_evidence_count": 0,
+        "location_text": "จุดหน้าเทศบาล ต.บ้านค่าย จ.ระยอง",
+        "precision": "subdistrict",
+        "geocode_source": "rayong-osm-n1747791265",
+        "marker_color": "#7b1fa2",
+        "is_greyed": false
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "inc-e2e01-supalai-ville-choeng-noen",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          101.3044,
+          12.6747
+        ]
+      },
+      "properties": {
+        "incident_id": "inc-e2e01-supalai-ville-choeng-noen",
+        "title": "น้ำท่วมเกือบมิดรั้วบ้านชั้น 1 ศุภาลัยวิลล์ระยอง ต.เชิงเนิน",
+        "status": "active",
+        "severity": "severe",
+        "passability": "unknown",
+        "last_reported_at": "2026-09-28T21:25:38+07:00",
+        "first_reported_at": "2026-09-28T21:25:38+07:00",
+        "independent_report_count": 1,
+        "repost_count": 1,
+        "evidence_urls": [
+          "https://x.com/myeyesnate_/status/2104578283199439169",
+          "https://x.com/faifull1996/status/2104742894758510699"
+        ],
+        "evidence_visibility": "public",
+        "private_evidence_count": 0,
+        "location_text": "ศุภาลัยวิลล์ระยอง ต.เชิงเนิน อ.เมือง จ.ระยอง",
+        "precision": "subdistrict",
+        "geocode_source": "rayong-subdistrict-210102",
+        "marker_color": "#d32f2f",
+        "is_greyed": false
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "inc-e2e01-wat-koh-kloi-soi-mo-mayuri",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          101.2739216,
+          12.7000581
+        ]
+      },
+      "properties": {
+        "incident_id": "inc-e2e01-wat-koh-kloi-soi-mo-mayuri",
+        "title": "น้ำสูงมาก ตรงข้ามวัดเกาะกลอย ซอยหมอมยุรี",
+        "status": "active",
+        "severity": "severe",
+        "passability": "unknown",
+        "last_reported_at": "2026-09-29T07:05:00+07:00",
+        "first_reported_at": "2026-09-29T07:05:00+07:00",
+        "independent_report_count": 1,
+        "repost_count": 0,
+        "evidence_urls": [
+          "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=2261878061268941"
+        ],
+        "evidence_visibility": "public",
+        "private_evidence_count": 0,
+        "location_text": "ตรงข้ามวัดเกาะกลอยซอยหมอมยุรี",
+        "precision": "point",
+        "geocode_source": "rayong-osm-n2899862481",
+        "marker_color": "#d32f2f",
+        "is_greyed": false
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "inc-e2e01-soi-nong-chok-school-choeng-noen",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          101.3033141,
+          12.6740793
+        ]
+      },
+      "properties": {
+        "incident_id": "inc-e2e01-soi-nong-chok-school-choeng-noen",
+        "title": "น้ำท่วม ม.5 เชิงเนิน ซอยโรงเรียนหนองจอก",
+        "status": "active",
+        "severity": "unknown",
+        "passability": "unknown",
+        "last_reported_at": "2026-09-29T07:07:00+07:00",
+        "first_reported_at": "2026-09-29T07:07:00+07:00",
+        "independent_report_count": 1,
+        "repost_count": 0,
+        "evidence_urls": [
+          "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=2105320403685132"
+        ],
+        "evidence_visibility": "public",
+        "private_evidence_count": 0,
+        "location_text": "ม.5 เชิงเนิน ซ.รร.หนองจอก",
+        "precision": "road_segment",
+        "geocode_source": "https://nominatim.openstreetmap.org/lookup?osm_ids=N3003528936&format=jsonv2",
+        "marker_color": "#7b1fa2",
+        "is_greyed": false
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "inc-e2e01-koh-kloi-junction",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          101.2731368,
+          12.6969312
+        ]
+      },
+      "properties": {
+        "incident_id": "inc-e2e01-koh-kloi-junction",
+        "title": "น้ำท่วมสูง แยกเกาะกลอย (รถใหญ่จากบ้านค่ายถูกห้ามผ่าน)",
+        "status": "active",
+        "severity": "severe",
+        "passability": "impassable",
+        "last_reported_at": "2026-09-29T07:10:00+07:00",
+        "first_reported_at": "2026-09-29T07:02:00+07:00",
+        "independent_report_count": 2,
+        "repost_count": 0,
+        "evidence_urls": [
+          "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=961592686351770",
+          "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=1410433880525078"
+        ],
+        "evidence_visibility": "public",
+        "private_evidence_count": 0,
+        "location_text": "แยกเกาะกลอย / จุดกลับรถแยกเกาะกลอย",
+        "precision": "point",
+        "geocode_source": "rayong-osm-n1634530796",
+        "marker_color": "#d32f2f",
+        "is_greyed": false
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "inc-e2e01-ratbamrung-suan-si-mueang",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          101.2757976,
+          12.6757878
+        ]
+      },
+      "properties": {
+        "incident_id": "inc-e2e01-ratbamrung-suan-si-mueang",
+        "title": "น้ำท่วมขัง ถนนราษฎร์บำรุง (สายล่าง) ช่วงทางเข้าสวนศรีเมือง–วัดโขดทิมทาราม",
+        "status": "active",
+        "severity": "minor",
+        "passability": "all_vehicles",
+        "last_reported_at": "2026-09-29T07:25:00+07:00",
+        "first_reported_at": "2026-09-29T07:24:00+07:00",
+        "independent_report_count": 1,
+        "repost_count": 0,
+        "evidence_urls": [
+          "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=1642801427395975",
+          "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=1642801427395975&reply_comment_id=1558739542223315"
+        ],
+        "evidence_visibility": "public",
+        "private_evidence_count": 0,
+        "location_text": "ถนนราษฎร์บำรุง(สายล่าง) ทางเข้าสวนศรีเมือง, ทางเข้าวัดโขดทิมทาราม",
+        "precision": "road_segment",
+        "geocode_source": "rayong-osm-w168875940",
+        "marker_color": "#fbc02d",
+        "is_greyed": false
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "inc-e2e01-behind-central-rayong",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          101.2684258,
+          12.6960229
+        ]
+      },
+      "properties": {
+        "incident_id": "inc-e2e01-behind-central-rayong",
+        "title": "น้ำท่วม ถนนเส้นหลังเซ็นทรัลระยอง (ทรงตัว ลดลงเล็กน้อย)",
+        "status": "active",
+        "severity": "unknown",
+        "passability": "unknown",
+        "last_reported_at": "2026-09-29T07:48:00+07:00",
+        "first_reported_at": "2026-09-29T07:06:00+07:00",
+        "independent_report_count": 2,
+        "repost_count": 0,
+        "evidence_urls": [
+          "https://www.facebook.com/zam.redarmy/posts/pfbid0jR38m4mBGbnxMCFuvcp34gNxfRbBg6fbW6H117NsrFUSNVC2A8Xtijyqjnnur8xil",
+          "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=3534132846760673"
+        ],
+        "evidence_visibility": "public",
+        "private_evidence_count": 0,
+        "location_text": "ถนนเส้นหลังเซ็นทรัลระยอง (check-in: หนองมะหาด ต.ทับมา); หลังเซนทรัล",
+        "precision": "road_segment",
+        "geocode_source": "https://nominatim.openstreetmap.org/lookup?osm_ids=W349155419&format=jsonv2",
+        "marker_color": "#7b1fa2",
+        "is_greyed": false
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "inc-e2e01-lotus-rayong-hospital-junction",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          101.2764916,
+          12.6827662
+        ]
+      },
+      "properties": {
+        "incident_id": "inc-e2e01-lotus-rayong-hospital-junction",
+        "title": "น้ำท่วมครึ่งล้อ เส้นโลตัส–แยกไฟแดง รพ.ระยอง รถเล็กควรเลี่ยง",
+        "status": "active",
+        "severity": "moderate",
+        "passability": "large_vehicles_only",
+        "last_reported_at": "2026-09-29T08:05:00+07:00",
+        "first_reported_at": "2026-09-29T07:17:00+07:00",
+        "independent_report_count": 2,
+        "repost_count": 0,
+        "evidence_urls": [
+          "https://www.facebook.com/SiwabestBuripha/posts/pfbid0y4V1P2y11EvA4xUrF4cEQKti2BCSbjSmsJMwiHAgU3Y7vQ7Hx7x7g1653abjUFxGl",
+          "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=2557770978030029"
+        ],
+        "evidence_visibility": "public",
+        "private_evidence_count": 0,
+        "location_text": "เส้น โลตัส-แยกไฟแดง รพ.ระยอง; ไฟแดงรพ.ระยอง",
+        "precision": "road_segment",
+        "geocode_source": "rayong-osm-w1215983984",
+        "marker_color": "#f57c00",
+        "is_greyed": false
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "inc-e2e01-supalai-bella-thap-ma",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          101.2547939,
+          12.7051467
+        ]
+      },
+      "properties": {
+        "incident_id": "inc-e2e01-supalai-bella-thap-ma",
+        "title": "น้ำท่วม หมู่บ้านศุภาลัยเบลล่า ทับมา (น้ำนิ่ง ไม่ลดไม่เพิ่ม)",
+        "status": "active",
+        "severity": "unknown",
+        "passability": "unknown",
+        "last_reported_at": "2026-09-29T08:29:00+07:00",
+        "first_reported_at": "2026-09-29T08:29:00+07:00",
+        "independent_report_count": 1,
+        "repost_count": 0,
+        "evidence_urls": [
+          "https://www.facebook.com/pang.thongyoo.2024/posts/pfbid0361uTRhhQozUwoZ8zqXCyBHNgXprHvG5fZj3cieVVRnc9mMLAYo5E9TeVydhYLbvGl"
+        ],
+        "evidence_visibility": "public",
+        "private_evidence_count": 0,
+        "location_text": "ศุภาลัยเบลล่า ทับมา ระยอง",
+        "precision": "point",
+        "geocode_source": "https://nominatim.openstreetmap.org/lookup?osm_ids=W1268120513&format=jsonv2",
+        "marker_color": "#7b1fa2",
+        "is_greyed": false
+      }
+    }
+  ]
+}

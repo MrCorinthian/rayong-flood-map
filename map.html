@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>แผนที่น้ำท่วมจังหวัดระยอง — Rayong Flood Map</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%227%22 fill=%22%238b0000%22/%3E%3C/svg%3E">
+  <meta name="description" content="แผนที่จุดน้ำท่วมจังหวัดระยอง รวบรวมจากโพสต์สาธารณะ อัปเดตอัตโนมัติทุก 5 นาที">
+  <!-- Leaflet 1.9.4 (pinned). SRI sha384 verified 2026-09-29 against both unpkg and cdnjs copies. No API key needed. -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin=""></script>
+  <style>
+    :root {
+      --severe: #8b0000; --moderate: #f57c00; --minor: #fbc02d; --unknown: #9e9e9e; --none: #2e7d32;
+      --ink: #1f2328; --muted: #5f6b76;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body { font-family: "Sarabun", "Noto Sans Thai", "Leelawadee UI", Tahoma, system-ui, sans-serif; color: var(--ink); }
+    #map { position: absolute; inset: 0; }
+
+    /* ---------- info panel ---------- */
+    #panel {
+      position: absolute; z-index: 1000; top: 10px; left: 10px; width: 300px; max-height: calc(100% - 20px); overflow: auto;
+      background: rgba(255,255,255,.97); border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.28);
+      padding: 10px 12px; font-size: 13.5px; line-height: 1.45;
+    }
+    #panel h1 { font-size: 16px; margin: 0 0 4px; }
+    #updated { font-weight: 600; }
+    #summary, #checked { color: var(--muted); font-size: 12.5px; }
+    #error { display: none; color: #b00020; font-size: 12.5px; margin-top: 4px; }
+    details { margin-top: 6px; }
+    summary { cursor: pointer; font-weight: 600; padding: 4px 0; list-style-position: inside; }
+    .lg { display: flex; align-items: center; gap: 8px; margin: 3px 0; }
+    .lg .sw { flex: 0 0 22px; display: flex; justify-content: center; }
+    .disclaimer { margin-top: 8px; padding-top: 6px; border-top: 1px solid #e3e3e3; font-size: 12px; color: var(--muted); }
+
+    /* ---------- markers ---------- */
+    .rf-icon { background: none; border: none; }
+    .pin {
+      display: block; width: 18px; height: 18px; border-radius: 50%; border: 2px solid #fff;
+      box-shadow: 0 0 0 1px rgba(0,0,0,.55), 0 1px 3px rgba(0,0,0,.4); position: relative;
+    }
+    .pin.sev-severe { background: var(--severe); } .pin.sev-moderate { background: var(--moderate); }
+    .pin.sev-minor { background: var(--minor); } .pin.sev-unknown { background: var(--unknown); }
+    .pin.sev-none { background: var(--none); }
+    /* impassable: thick black ring + white cross */
+    .pin.imp { box-shadow: 0 0 0 3px #000, 0 0 0 5px #fff, 0 1px 4px 4px rgba(0,0,0,.35); }
+    .pin.imp::after {
+      content: "✕"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      color: #fff; font: bold 11px/1 Arial, sans-serif;
+    }
+    /* stale = muted */
+    .pin.stale { opacity: .5; border-style: dashed; border-color: #444; filter: grayscale(.5); }
+    .sw .circle { width: 18px; height: 18px; border-radius: 50%; border: 2px dashed #555; background: rgba(120,120,120,.25); }
+
+    /* ---------- popup ---------- */
+    .pp { font-size: 13.5px; line-height: 1.45; }
+    .pp h3 { font-size: 15px; margin: 0 0 3px; }
+    .pp .loc { color: var(--muted); margin-bottom: 4px; }
+    .pp .note { background: #fff4e5; border-left: 3px solid #f57c00; padding: 3px 6px; margin: 4px 0; font-size: 12.5px; }
+    .pp .note.stale { background: #eee; border-color: #888; }
+    .pp .note.priv { background: #eef3ff; border-color: #3f51b5; }
+    .pp table { border-collapse: collapse; width: 100%; margin-top: 4px; }
+    .pp th { text-align: left; font-weight: 600; padding: 2px 8px 2px 0; vertical-align: top; white-space: nowrap; }
+    .pp td { padding: 2px 0; }
+    .pp ul { margin: 2px 0 0; padding-left: 18px; }
+    .pp a { word-break: break-all; }
+    .badge { display: inline-block; padding: 0 6px; border-radius: 8px; color: #fff; font-size: 12px; }
+    .badge.sev-minor { color: #222; }
+    .badge.sev-severe { background: var(--severe); } .badge.sev-moderate { background: var(--moderate); }
+    .badge.sev-minor { background: var(--minor); } .badge.sev-unknown { background: var(--unknown); } .badge.sev-none { background: var(--none); }
+
+    #chips { display: none; }
+    /* ---------- mobile ---------- */
+    @media (max-width: 640px) {
+      #panel {
+        top: auto; bottom: 0; left: 0; right: 0; width: auto; max-height: 48%;
+        border-radius: 12px 12px 0 0; padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+        font-size: 13px;
+      }
+      #panel h1 { font-size: 15px; }
+      .pin { width: 22px; height: 22px; }
+      .pin.imp::after { font-size: 13px; }
+      .leaflet-bottom .leaflet-control-attribution { margin-bottom: var(--panel-h, 0px); }
+      #chips { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 4px; font-size: 12px; }
+      #chips span { display: inline-flex; align-items: center; gap: 4px; }
+      #chips .pin { width: 12px; height: 12px; border-width: 1px; }
+      #chips .pin.imp { box-shadow: 0 0 0 2px #000; }
+      #chips .pin.imp::after { font-size: 8px; }
+      .leaflet-control-zoom a { width: 36px; height: 36px; line-height: 36px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="map" role="application" aria-label="แผนที่น้ำท่วมจังหวัดระยอง"></div>
+
+  <section id="panel" aria-label="ข้อมูลแผนที่">
+    <h1>🌊 จุดน้ำท่วม จ.ระยอง</h1>
+    <div>ข้อมูลล่าสุด: <span id="updated">กำลังโหลด…</span></div>
+    <div id="summary"></div>
+    <div id="checked"></div>
+    <div id="error" role="alert"></div>
+    <div id="chips" aria-hidden="true">
+      <span><i class="pin sev-severe"></i>รุนแรง</span><span><i class="pin sev-moderate"></i>ปานกลาง</span>
+      <span><i class="pin sev-minor"></i>เล็กน้อย</span><span><i class="pin sev-unknown"></i>ไม่ทราบ</span>
+      <span><i class="pin sev-none"></i>ไม่มี</span><span><i class="pin sev-unknown imp"></i>ผ่านไม่ได้</span>
+    </div>
+    <details id="legend">
+      <summary>คำอธิบายสัญลักษณ์</summary>
+      <div class="lg"><span class="sw"><span class="pin sev-severe"></span></span>รุนแรง</div>
+      <div class="lg"><span class="sw"><span class="pin sev-moderate"></span></span>ปานกลาง</div>
+      <div class="lg"><span class="sw"><span class="pin sev-minor"></span></span>เล็กน้อย</div>
+      <div class="lg"><span class="sw"><span class="pin sev-unknown"></span></span>ไม่ทราบระดับ</div>
+      <div class="lg"><span class="sw"><span class="pin sev-none"></span></span>ไม่มีน้ำท่วม / น้ำลดแล้ว</div>
+      <div class="lg"><span class="sw"><span class="pin sev-unknown imp"></span></span>ถนนผ่านไม่ได้ (วงดำ + ✕)</div>
+      <div class="lg"><span class="sw"><span class="circle"></span></span>ตำแหน่งโดยประมาณ (ระดับตำบล/อำเภอ)</div>
+      <div class="lg"><span class="sw"><span class="pin sev-unknown stale"></span></span>ข้อมูลเก่า (ไม่มีอัปเดตเกิน 24 ชม.)</div>
+    </details>
+    <div class="disclaimer">ข้อมูลรวบรวมจากโพสต์สาธารณะ อาจไม่ครบหรือไม่เป็นปัจจุบัน โปรดตรวจสอบกับหน่วยงานในพื้นที่</div>
+  </section>
+
+  <script>
+  (function () {
+    "use strict";
+    var DATA_URL = "rayong_floods.geojson";           // same folder; page must be served over HTTP
+    var REFRESH_MS = 5 * 60 * 1000;                     // auto-refresh every 5 minutes
+    // Rayong Province bbox (OSM relation 1908812) — see config/settings.json
+    var RAYONG_BOUNDS = L.latLngBounds([12.2159732, 100.9844476], [13.1635573, 101.8310549]);
+    var SEV_COLOR = { severe: "#8b0000", moderate: "#f57c00", minor: "#fbc02d", unknown: "#9e9e9e", none: "#2e7d32" };
+    var SEV_TH = { severe: "รุนแรง", moderate: "ปานกลาง", minor: "เล็กน้อย", unknown: "ไม่ทราบ", none: "ไม่มีน้ำท่วม / น้ำลดแล้ว" };
+    var PASS_TH = { all_vehicles: "ผ่านได้ทุกประเภท", large_vehicles_only: "รถใหญ่เท่านั้น", impassable: "ผ่านไม่ได้", unknown: "ไม่ทราบ" };
+    var STATUS_TH = { active: "มีรายงานล่าสุด", stale: "ข้อมูลเก่า (ไม่มีอัปเดตเกิน 24 ชม.)" };
+    var SHOW_STATUS = { active: true, stale: true };   // never plot needs_review / inactive
+    var APPROX_RADIUS_M = { subdistrict: 1500, district: 4000 };
+    var APPROX_LABEL = "ตำแหน่งโดยประมาณ (ระดับตำบล/อำเภอ)";
+
+    var isMobile = window.matchMedia("(max-width: 640px)").matches;
+    var legend = document.getElementById("legend");
+    if (!isMobile) legend.open = true;
+
+    var map = L.map("map", { zoomControl: true, tap: true, preferCanvas: false });
+    map.fitBounds(RAYONG_BOUNDS);
+    var tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
+    });
+    // add OSM tiles only once the first view is settled, so we don't request (and then abort) province-view tiles
+    function addTiles() { if (!map.hasLayer(tiles)) tiles.addTo(map); }
+    setTimeout(addTiles, 4000);
+    map.createPane("approx"); map.getPane("approx").style.zIndex = 450;   // circles below pins (markerPane = 600)
+
+    var layer = L.layerGroup().addTo(map);
+    var firstFitDone = false;
+    var els = { updated: byId("updated"), summary: byId("summary"), checked: byId("checked"), error: byId("error") };
+    window.RF = { rendered: 0, lastLoad: null, errors: [] };  // simple status hook (used by tests)
+
+    function byId(id) { return document.getElementById(id); }
+    function esc(s) {
+      return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+    function fmtBkk(iso) {
+      if (!iso) return "-";
+      var d = new Date(iso);
+      if (isNaN(d)) return String(iso);
+      return d.toLocaleString("th-TH", { timeZone: "Asia/Bangkok", day: "numeric", month: "short", year: "numeric",
+                                         hour: "2-digit", minute: "2-digit", hour12: false }) + " น.";
+    }
+    function ago(iso) {
+      var t = Date.parse(iso); if (isNaN(t)) return "";
+      var m = Math.round((Date.now() - t) / 60000);
+      if (m < 1) return "เมื่อสักครู่";
+      if (m < 60) return m + " นาทีที่แล้ว";
+      if (m < 48 * 60) return Math.floor(m / 60) + " ชม. ที่แล้ว";
+      return Math.floor(m / 1440) + " วันที่แล้ว";
+    }
+    function isPrivate(p) {
+      return p.private_group === true || p.evidence_visibility === "private_only" ||
+             p.source_privacy === "private" || p.is_private === true;
+    }
+    function publicLinks(p) {
+      if (isPrivate(p)) return [];
+      var urls = Array.isArray(p.evidence_urls) ? p.evidence_urls : [];
+      return urls.filter(function (u) {
+        if (!/^https?:\/\//i.test(u || "")) return false;
+        // defence in depth: if any evidence was private, never show group URLs
+        if (p.evidence_visibility && p.evidence_visibility !== "public" && /facebook\.com\/groups\//i.test(u)) return false;
+        return true;
+      });
+    }
+    function hostLabel(u) {
+      try {
+        var h = new URL(u).hostname.replace(/^www\.|^m\./, "");
+        if (/facebook\.com$|fb\.watch$/.test(h)) return "Facebook";
+        if (/(^|\.)x\.com$|twitter\.com$/.test(h)) return "X (Twitter)";
+        return h;
+      } catch (e) { return "ลิงก์"; }
+    }
+
+    function popupHtml(p, approx) {
+      var sev = SEV_TH[p.severity] ? p.severity : "unknown";
+      var pass = PASS_TH[p.passability] ? p.passability : "unknown";
+      var links = publicLinks(p);
+      var h = '<div class="pp">';
+      h += "<h3>" + esc(p.title || "จุดน้ำท่วม") + "</h3>";
+      if (p.location_text) h += '<div class="loc">📍 ' + esc(p.location_text) + "</div>";
+      if (approx) h += '<div class="note">' + APPROX_LABEL + "</div>";
+      if (p.status === "stale") h += '<div class="note stale">' + STATUS_TH.stale + "</div>";
+      h += "<table>";
+      h += '<tr><th>ความรุนแรง</th><td><span class="badge sev-' + sev + '">' + esc(SEV_TH[sev]) + "</span></td></tr>";
+      h += "<tr><th>รถผ่านได้ไหม</th><td>" + (pass === "impassable" ? "⛔ " : "") + esc(PASS_TH[pass]) + "</td></tr>";
+      h += "<tr><th>อัปเดตล่าสุด</th><td>" + esc(fmtBkk(p.last_reported_at)) +
+           (p.last_reported_at ? ' <span style="color:#5f6b76">(' + esc(ago(p.last_reported_at)) + ")</span>" : "") + "</td></tr>";
+      h += "<tr><th>รายงานอิสระ</th><td>" + esc(Number(p.independent_report_count) || 0) + " รายงาน</td></tr>";
+      h += "</table>";
+      if (isPrivate(p)) {
+        h += '<div class="note priv">ข้อมูลนี้มาจากกลุ่มส่วนตัว จึงแสดงเฉพาะข้อเท็จจริง ไม่แสดงลิงก์หรือข้อความต้นทาง</div>';
+      } else if (links.length) {
+        h += "<div><b>หลักฐาน:</b><ul>";
+        links.forEach(function (u, i) {
+          h += '<li><a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer nofollow">' +
+               esc(hostLabel(u)) + " โพสต์ที่ " + (i + 1) + "</a></li>";
+        });
+        h += "</ul></div>";
+        if (p.evidence_visibility === "mixed") h += '<div class="note priv">หลักฐานบางส่วนมาจากกลุ่มส่วนตัว จึงไม่แสดงลิงก์ส่วนนั้น</div>';
+      } else {
+        h += "<div><b>หลักฐาน:</b> -</div>";
+      }
+      h += "</div>";
+      return h;
+    }
+
+    function render(gj) {
+      var feats = (gj && Array.isArray(gj.features)) ? gj.features : [];
+      var newLayer = L.layerGroup();
+      var bounds = L.latLngBounds([]);
+      var n = 0, nActive = 0, nStale = 0;
+      feats.forEach(function (f) {
+        var p = (f && f.properties) || {};
+        if (!SHOW_STATUS[p.status]) return;                       // only active + stale
+        if (!f.geometry || f.geometry.type !== "Point") return;
+        var c = f.geometry.coordinates, lon = +c[0], lat = +c[1];  // RFC 7946 = [lon, lat]
+        if (!isFinite(lat) || !isFinite(lon)) return;
+        var ll = L.latLng(lat, lon);
+        var sev = SEV_COLOR[p.severity] ? p.severity : "unknown";
+        var stale = p.status === "stale";
+        var imp = p.passability === "impassable";
+        var approx = Object.prototype.hasOwnProperty.call(APPROX_RADIUS_M, p.precision);
+        var popOpts = { maxWidth: Math.min(320, window.innerWidth - 50), autoPanPadding: [20, 20] };
+        var obj;
+        if (approx) {
+          obj = L.circle(ll, {
+            pane: "approx", radius: APPROX_RADIUS_M[p.precision],
+            color: imp ? "#000" : SEV_COLOR[sev], weight: imp ? 4 : 2, dashArray: "6 5",
+            fillColor: SEV_COLOR[sev], fillOpacity: stale ? 0.12 : 0.28, opacity: stale ? 0.5 : 0.95
+          });
+          obj.bindTooltip(APPROX_LABEL, { direction: "top", sticky: true });
+          bounds.extend(obj.getLatLng().toBounds(APPROX_RADIUS_M[p.precision] * 2));
+        } else {
+          obj = L.marker(ll, {
+            icon: L.divIcon({ className: "rf-icon", iconSize: isMobile ? [22, 22] : [18, 18],
+                              html: '<span class="pin sev-' + sev + (imp ? " imp" : "") + (stale ? " stale" : "") + '"></span>' }),
+            title: p.title || "", alt: p.title || "", keyboard: true,
+            zIndexOffset: stale ? -1000 : (imp ? 1000 : (sev === "severe" ? 500 : 0))
+          });
+          bounds.extend(ll);
+        }
+        obj.bindPopup(popupHtml(p, approx), popOpts);
+        newLayer.addLayer(obj);
+        n++; if (stale) nStale++; else nActive++;
+      });
+      map.removeLayer(layer); layer = newLayer.addTo(map);
+
+      window.RF.rendered = n;
+      syncPanel();
+      document.body.setAttribute("data-rendered", String(n));
+      els.updated.textContent = fmtBkk(gj.generated_at);
+      els.summary.textContent = n
+        ? "แสดง " + n + " จุด (ล่าสุด " + nActive + " · ข้อมูลเก่า " + nStale + ")"
+        : "ยังไม่มีจุดน้ำท่วมที่ยืนยันตำแหน่งได้";
+      if (!firstFitDone) {
+        firstFitDone = true;
+        if (n && bounds.isValid()) {
+          map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14, animate: false,
+                                  paddingBottomRight: isMobile ? [0, byId("panel").offsetHeight] : [0, 0] });
+        }
+        addTiles();
+      }
+    }
+
+    function load() {
+      if (location.protocol === "file:") {
+        addTiles();
+        showError("กรุณาเปิดหน้านี้ผ่าน HTTP (เช่น python3 -m http.server) เบราว์เซอร์ไม่อนุญาตให้โหลดข้อมูลจากไฟล์โดยตรง");
+        return Promise.resolve();
+      }
+      return fetch(DATA_URL + "?t=" + Date.now(), { cache: "no-store" })
+        .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+        .then(function (gj) {
+          render(gj);
+          window.RF.lastLoad = new Date().toISOString();
+          els.checked.textContent = "ตรวจสอบข้อมูลใหม่เมื่อ " + fmtBkk(window.RF.lastLoad) + " · อัปเดตอัตโนมัติทุก 5 นาที";
+          els.error.style.display = "none";
+        })
+        .catch(function (e) {
+          window.RF.errors.push(String(e)); addTiles();
+          showError("โหลดข้อมูลไม่สำเร็จ (" + e.message + ") จะลองใหม่อัตโนมัติ");
+        });
+    }
+    function showError(msg) { els.error.textContent = msg; els.error.style.display = "block"; }
+
+    load();
+    var lastTick = Date.now();
+    setInterval(function () { lastTick = Date.now(); load(); }, REFRESH_MS);
+    // phones pause timers in background tabs: refresh when the page becomes visible again and data is old
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "visible" && Date.now() - lastTick > REFRESH_MS) { lastTick = Date.now(); load(); }
+    });
+    // keep the attribution visible above the mobile bottom sheet
+    function syncPanel() { document.documentElement.style.setProperty("--panel-h", byId("panel").offsetHeight + "px"); }
+    legend.addEventListener("toggle", syncPanel); window.addEventListener("resize", syncPanel); syncPanel();
+    if (window.ResizeObserver) new ResizeObserver(syncPanel).observe(byId("panel"));
+  })();
+  </script>
+</body>
+</html>

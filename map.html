@@ -98,6 +98,15 @@
     .badge.sev-minor { background: var(--minor); color: #3d2b00; } .badge.sev-unknown { background: var(--unknown); }
     .badge.sev-none { background: var(--none); }
 
+    /* ---------- unverified crowd-sourced layer (rayongall.com) ---------- */
+    .wu-toggle { display: flex; align-items: center; gap: 7px; margin-top: 6px; font-size: 12.5px; cursor: pointer; user-select: none; }
+    .wu-toggle input { width: 16px; height: 16px; margin: 0; accent-color: #607d8b; cursor: pointer; }
+    .wu-toggle .wu-n { color: var(--muted); }
+    .wu-toggle.is-missing { display: none; }
+    .lg .wu-sw { width: 26px; height: 18px; border: 1.5px dashed rgba(211,47,47,.75); background: rgba(211,47,47,.2); border-radius: 3px; }
+    .pp .note.wu { background: #f3f4f6; border-color: #90a4ae; }
+    .pp .note.wu a { color: #1a4fb4; }
+    .pp-head.wu { background: #f7f7f8; border-bottom-style: dashed; }
     #chips { display: none; }
     /* ---------- mobile ---------- */
     @media (max-width: 640px) {
@@ -126,6 +135,9 @@
     <div id="summary"></div>
     <div id="checked"></div>
     <div id="error" role="alert"></div>
+    <label class="wu-toggle is-missing" id="wu-toggle-row" title="ข้อมูลจาก rayongall.com ส่งโดยประชาชน ยังไม่ได้ตรวจสอบ">
+      <input type="checkbox" id="wu-toggle" checked> <span>รายงานจากประชาชน ยังไม่ยืนยัน <span class="wu-n" id="wu-n"></span></span>
+    </label>
     <div id="chips" aria-hidden="true"></div>
     <details id="legend">
       <summary>คำอธิบายสัญลักษณ์</summary>
@@ -155,6 +167,11 @@
     var SHOW_STATUS = { active: true, stale: true };   // never plot needs_review / inactive
     var APPROX_RADIUS_M = { subdistrict: 1500, district: 4000 };
     var APPROX_LABEL = "ตำแหน่งโดยประมาณ (ระดับตำบล/อำเภอ)";
+    // separate UNVERIFIED crowd-sourced layer (written by the Mapper from rayongall.com's public flood layer)
+    var WEB_URL = "rayong_web_unverified.geojson";      // optional; missing file = layer simply hidden
+    var WEB_SITE = "https://74.rayongall.com/ry/flood-map/";
+    var WEB_LABEL = "รายงานจากประชาชน (rayongall.com) ยังไม่ยืนยัน";
+    var WEB_LEGEND = "รายงานจากประชาชน ยังไม่ยืนยัน";
 
     var isMobile = window.matchMedia("(max-width: 640px)").matches;
     var legend = document.getElementById("legend");
@@ -227,6 +244,9 @@
       h += '<div class="lg"><span class="sw">' + symbol({ sev: "moderate", pass: "unknown", shape: "dot", size: 22, stale: true }).html + "</span>จาง + ขอบประ = ข้อมูลเก่า (เกิน 24 ชม.)</div>";
       h += '<div class="lg"><span class="sw">' + symbol({ sev: "minor", pass: "unknown", shape: "dot", size: 20, count: 2 }).html +
            "</span>ตัวเลข = จำนวนรายงานอิสระ (ยิ่งมากหมุดยิ่งใหญ่)</div>";
+      h += '<div class="lg-h">ชั้นข้อมูลเพิ่มเติม</div>';
+      h += '<div class="lg" title="' + WEB_LABEL + '"><span class="sw"><span class="wu-sw"></span></span>' + WEB_LEGEND +
+           " (สีจาง + เส้นประ, อยู่ใต้หมุดที่ยืนยันแล้ว)</div>";
       byId("legend-body").innerHTML = h;
       // compact chips for the mobile bottom sheet (visible while the legend is closed)
       var c = '<div class="row">';
@@ -249,11 +269,13 @@
     function addTiles() { if (!map.hasLayer(tiles)) tiles.addTo(map); }
     setTimeout(addTiles, 4000);
     map.createPane("approx"); map.getPane("approx").style.zIndex = 450;   // area circles below markers (markerPane = 600)
+    map.createPane("webUnverified"); map.getPane("webUnverified").style.zIndex = 390;   // unverified layer BELOW everything verified
 
     var layer = L.layerGroup().addTo(map);
     var firstFitDone = false;
     var els = { updated: byId("updated"), summary: byId("summary"), checked: byId("checked"), error: byId("error") };
-    window.RF = { rendered: 0, lastLoad: null, errors: [], map: map };  // simple status hook (used by tests)
+    window.RF = { rendered: 0, lastLoad: null, errors: [], map: map,   // simple status hook (used by tests)
+                  webRendered: 0, webLoaded: false, webErrors: [] };
 
     function byId(id) { return document.getElementById(id); }
     function esc(s) {
@@ -403,12 +425,105 @@
       }
     }
 
+    // ------------------------------------------------------------------
+    // Unverified crowd-sourced layer (separate from verified incidents; never merged)
+    // ------------------------------------------------------------------
+    function muted(hex) {   // same palette as verified markers, blended 35 % toward grey
+      var m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex || "");
+      if (!m) return "#9e9e9e";
+      return "#" + [1, 2, 3].map(function (i) {
+        var v = Math.round(parseInt(m[i], 16) * 0.65 + 158 * 0.35);
+        return (v < 16 ? "0" : "") + v.toString(16);
+      }).join("");
+    }
+    var SEV_MUTED = {};
+    Object.keys(SEV_COLOR).forEach(function (k) { SEV_MUTED[k] = muted(SEV_COLOR[k]); });
+    var webLayer = null, webWanted = true;
+    var webToggle = byId("wu-toggle"), webRow = byId("wu-toggle-row"), webCount = byId("wu-n");
+    webToggle.addEventListener("change", function () {
+      webWanted = webToggle.checked;
+      if (!webLayer) return;
+      if (webWanted) webLayer.addTo(map); else map.removeLayer(webLayer);
+    });
+    function webTitle(p) {
+      var t = p.title;
+      if (Array.isArray(t)) t = t.filter(function (x) { return typeof x === "string" && x.trim(); })[0];
+      return (typeof t === "string" && t.trim()) ? t.trim() : "จุดน้ำท่วม (ไม่ระบุชื่อ)";
+    }
+    function webPopupHtml(p) {
+      var sev = SEV_COLOR[p.severity] ? p.severity : "unknown";
+      var pass = PASS_TH[p.passability] ? p.passability : "unknown";
+      var d = (typeof p.depth_cm === "number" && isFinite(p.depth_cm)) ? p.depth_cm + " ซม." : "ไม่ระบุ";
+      var h = '<div class="pp">';
+      h += '<div class="pp-head wu" style="--c:' + SEV_MUTED[sev] + '"><div><h3>' + esc(webTitle(p)) + "</h3>" +
+           (p.district ? '<div class="loc">อ.' + esc(p.district) + "</div>" : "") + "</div></div>";
+      h += '<div class="pp-body"><table>';
+      h += "<tr><th>ความลึก (cm)</th><td>" + esc(d) + "</td></tr>";
+      h += "<tr><th>สถานะถนน</th><td>" + esc(PASS_TH[pass]) + "</td></tr>";
+      h += "<tr><th>เวลารายงานล่าสุด (ICT)</th><td>" + esc(fmtBkk(p.last_reported_at)) +
+           (p.last_reported_at ? ' <span class="ago">(' + esc(ago(p.last_reported_at)) + ")</span>" : "") + "</td></tr>";
+      h += "</table>";
+      h += '<div class="note wu" style="margin-top:8px">' + esc(WEB_LABEL) + '<br><a href="' + WEB_SITE +
+           '" target="_blank" rel="noopener noreferrer nofollow">ดูแผนที่ต้นทาง rayongall.com ↗</a></div>';
+      h += "</div></div>";
+      return h;
+    }
+    function webStyle(f) {
+      var p = (f && f.properties) || {};
+      var c = SEV_MUTED[SEV_COLOR[p.severity] ? p.severity : "unknown"];
+      var t = f && f.geometry && f.geometry.type;
+      if (t === "LineString") return { pane: "webUnverified", color: c, weight: 2, opacity: 0.8, dashArray: "5 5", lineCap: "butt" };
+      return { pane: "webUnverified", color: c, weight: 1.5, opacity: 0.75, dashArray: "4 4", fillColor: c, fillOpacity: 0.2 };
+    }
+    function renderWeb(gj) {
+      var n = 0;
+      var feats = (gj && Array.isArray(gj.features)) ? gj.features.filter(function (f) {
+        var p = (f && f.properties) || {};
+        var t = f && f.geometry && f.geometry.type;
+        return p.layer === "web_unverified" && (t === "Point" || t === "LineString" || t === "Polygon");
+      }) : [];
+      var popOpts = { maxWidth: Math.min(330, window.innerWidth - 40), minWidth: Math.min(240, window.innerWidth - 60),
+                      autoPanPadding: [20, 20], className: "rf-popup" };
+      var newLayer = L.geoJSON({ type: "FeatureCollection", features: feats }, {
+        pane: "webUnverified",
+        attribution: 'รายงานจากประชาชน: <a href="' + WEB_SITE + '" target="_blank" rel="noopener">rayongall.com</a> (ยังไม่ยืนยัน)',
+        style: webStyle,
+        pointToLayer: function (f, ll) {   // small hollow, faded circle
+          var s = webStyle(f);
+          return L.circleMarker(ll, { pane: "webUnverified", radius: isMobile ? 6 : 5, color: s.color, weight: 1.5,
+                                      opacity: 0.85, fillColor: s.color, fillOpacity: 0.2, dashArray: "2 2" });
+        },
+        onEachFeature: function (f, lyr) {
+          n++;
+          lyr.bindPopup(webPopupHtml(f.properties || {}), popOpts);
+          lyr.bindTooltip(esc(webTitle(f.properties || {})) + " · ยังไม่ยืนยัน", { sticky: true, direction: "top", opacity: 0.9 });
+        }
+      });
+      if (webLayer) map.removeLayer(webLayer);
+      webLayer = newLayer;
+      if (webWanted) webLayer.addTo(map);
+      window.RF.webRendered = n; window.RF.webLoaded = true;
+      webCount.textContent = "(" + n + ")";
+      webRow.classList.remove("is-missing");
+      syncPanel();
+    }
+    function loadWeb() {
+      return fetch(WEB_URL + "?t=" + Date.now(), { cache: "no-store" })
+        .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+        .then(renderWeb)
+        .catch(function (e) {   // optional layer: fail quietly, keep the last good copy if any
+          window.RF.webErrors.push(String(e));
+          if (!webLayer) { webRow.classList.add("is-missing"); window.RF.webRendered = 0; }
+        });
+    }
+
     function load() {
       if (location.protocol === "file:") {
         addTiles();
         showError("กรุณาเปิดหน้านี้ผ่าน HTTP (เช่น python3 -m http.server) เบราว์เซอร์ไม่อนุญาตให้โหลดข้อมูลจากไฟล์โดยตรง");
         return Promise.resolve();
       }
+      loadWeb();   // independent of the verified layer; its failure never affects verified markers
       return fetch(DATA_URL + "?t=" + Date.now(), { cache: "no-store" })
         .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
         .then(function (gj) {

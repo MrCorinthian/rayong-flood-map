@@ -1,7 +1,7 @@
 {
   "type": "FeatureCollection",
   "name": "rayong_floods",
-  "generated_at": "2026-09-29T11:18:00+07:00",
+  "generated_at": "2026-09-29T11:37:11+07:00",
   "bbox": [
     100.9844476,
     12.2159732,
@@ -222,11 +222,12 @@
         "passability": "unknown",
         "last_reported_at": "2026-09-29T07:48:00+07:00",
         "first_reported_at": "2026-09-29T07:06:00+07:00",
-        "independent_report_count": 2,
+        "independent_report_count": 3,
         "repost_count": 0,
         "evidence_urls": [
           "https://www.facebook.com/zam.redarmy/posts/pfbid0jR38m4mBGbnxMCFuvcp34gNxfRbBg6fbW6H117NsrFUSNVC2A8Xtijyqjnnur8xil",
-          "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=3534132846760673"
+          "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=3534132846760673",
+          "https://x.com/tngmwsss/status/2104787726101000639"
         ],
         "evidence_visibility": "public",
         "private_evidence_count": 0,

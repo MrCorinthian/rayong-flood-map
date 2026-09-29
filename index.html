@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>แผนที่น้ำท่วมจังหวัดระยอง — Rayong Flood Map</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%227%22 fill=%22%238b0000%22/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%227%22 fill=%22%23d32f2f%22 stroke=%22%23fff%22 stroke-width=%221.5%22/%3E%3C/svg%3E">
   <meta name="description" content="แผนที่จุดน้ำท่วมจังหวัดระยอง รวบรวมจากโพสต์สาธารณะ อัปเดตอัตโนมัติทุก 5 นาที">
   <!-- Leaflet 1.9.4 (pinned). SRI sha384 verified 2026-09-29 against both unpkg and cdnjs copies. No API key needed. -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -12,85 +12,108 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
           integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin=""></script>
   <style>
+    /* Severity colours mirror config/settings.json -> marker_colors (keep in sync). */
     :root {
-      --severe: #8b0000; --moderate: #f57c00; --minor: #fbc02d; --unknown: #9e9e9e; --none: #2e7d32;
-      --ink: #1f2328; --muted: #5f6b76;
+      --severe: #d32f2f; --moderate: #f57c00; --minor: #fbc02d; --unknown: #757575; --none: #388e3c;
+      --ink: #1f2328; --muted: #5f6b76; --line: #e6e8eb;
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; margin: 0; }
     body { font-family: "Sarabun", "Noto Sans Thai", "Leelawadee UI", Tahoma, system-ui, sans-serif; color: var(--ink); }
-    #map { position: absolute; inset: 0; }
+    #map { position: absolute; inset: 0; background: #e8eef1; }
 
     /* ---------- info panel ---------- */
     #panel {
-      position: absolute; z-index: 1000; top: 10px; left: 10px; width: 300px; max-height: calc(100% - 20px); overflow: auto;
-      background: rgba(255,255,255,.97); border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.28);
-      padding: 10px 12px; font-size: 13.5px; line-height: 1.45;
+      position: absolute; z-index: 1000; top: 10px; left: 10px; width: 312px; max-height: calc(100% - 20px); overflow: auto;
+      background: rgba(255,255,255,.97); border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,.22), 0 1px 3px rgba(0,0,0,.18);
+      padding: 11px 13px; font-size: 13.5px; line-height: 1.45;
     }
     #panel h1 { font-size: 16px; margin: 0 0 4px; }
     #updated { font-weight: 600; }
     #summary, #checked { color: var(--muted); font-size: 12.5px; }
     #error { display: none; color: #b00020; font-size: 12.5px; margin-top: 4px; }
-    details { margin-top: 6px; }
+    details { margin-top: 8px; border-top: 1px solid var(--line); padding-top: 4px; }
     summary { cursor: pointer; font-weight: 600; padding: 4px 0; list-style-position: inside; }
-    .lg { display: flex; align-items: center; gap: 8px; margin: 3px 0; }
-    .lg .sw { flex: 0 0 22px; display: flex; justify-content: center; }
-    .disclaimer { margin-top: 8px; padding-top: 6px; border-top: 1px solid #e3e3e3; font-size: 12px; color: var(--muted); }
+    .disclaimer { margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+
+    /* ---------- legend (built by JS from the same SVG code as the markers) ---------- */
+    .lg-h { font-size: 11.5px; font-weight: 700; color: var(--muted); letter-spacing: .02em; margin: 8px 0 3px; }
+    .lg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 8px; }
+    .lg { display: flex; align-items: center; gap: 8px; margin: 2px 0; min-height: 26px; font-size: 13px; }
+    .lg .sw { flex: 0 0 30px; height: 30px; display: flex; align-items: center; justify-content: center; position: relative; }
+    .lg .sw .rf-mk { position: relative; }
+    .lg .area { width: 30px; height: 30px; border-radius: 50%; border: 1.5px dashed rgba(117,117,117,.8);
+                background: rgba(117,117,117,.14); display: flex; align-items: center; justify-content: center; }
+    .dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff;
+           box-shadow: 0 0 0 .5px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.35); flex: 0 0 auto; }
 
     /* ---------- markers ---------- */
     .rf-icon { background: none; border: none; }
-    .pin {
-      display: block; width: 18px; height: 18px; border-radius: 50%; border: 2px solid #fff;
-      box-shadow: 0 0 0 1px rgba(0,0,0,.55), 0 1px 3px rgba(0,0,0,.4); position: relative;
+    .rf-mk { position: relative; display: block; }
+    .rf-mk svg { display: block; overflow: visible;
+                 filter: drop-shadow(0 0 .6px rgba(0,0,0,.55)) drop-shadow(0 2px 2.5px rgba(0,0,0,.38)); }
+    .rf-mk.is-stale { opacity: .6; filter: grayscale(.35); }
+    .rf-cnt {
+      position: absolute; top: -5px; right: -7px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px;
+      background: #fff; color: var(--ink); border: 1.5px solid var(--c, #555); font: 700 10.5px/14px system-ui, sans-serif;
+      text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,.35); pointer-events: none;
     }
-    .pin.sev-severe { background: var(--severe); } .pin.sev-moderate { background: var(--moderate); }
-    .pin.sev-minor { background: var(--minor); } .pin.sev-unknown { background: var(--unknown); }
-    .pin.sev-none { background: var(--none); }
-    /* impassable: thick black ring + white cross */
-    .pin.imp { box-shadow: 0 0 0 3px #000, 0 0 0 5px #fff, 0 1px 4px 4px rgba(0,0,0,.35); }
-    .pin.imp::after {
-      content: "✕"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      color: #fff; font: bold 11px/1 Arial, sans-serif;
+    .rf-pulse {
+      position: absolute; border-radius: 50%; background: var(--c, #d32f2f); pointer-events: none;
+      animation: rfPulse 2.2s ease-out infinite; transform-origin: 50% 50%;
     }
-    /* stale = muted */
-    .pin.stale { opacity: .5; border-style: dashed; border-color: #444; filter: grayscale(.5); }
-    .sw .circle { width: 18px; height: 18px; border-radius: 50%; border: 2px dashed #555; background: rgba(120,120,120,.25); }
+    @keyframes rfPulse { 0% { transform: scale(.85); opacity: .55; } 75%, 100% { transform: scale(2.5); opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { .rf-pulse { animation: none; transform: scale(1.6); opacity: .22; } }
+    .leaflet-marker-icon.rf-icon:focus-visible { outline: 3px solid #1a73e8; outline-offset: 2px; border-radius: 50%; }
 
     /* ---------- popup ---------- */
+    .rf-popup .leaflet-popup-content-wrapper { padding: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 22px rgba(0,0,0,.28); }
+    .rf-popup .leaflet-popup-content { margin: 0; width: auto !important; min-width: 250px; }
+    .rf-popup a.leaflet-popup-close-button { top: 6px; right: 6px; width: 26px; height: 26px; font: 20px/24px Tahoma, sans-serif;
+      border-radius: 50%; background: rgba(255,255,255,.85); color: #444; text-align: center; }
     .pp { font-size: 13.5px; line-height: 1.45; }
-    .pp h3 { font-size: 15px; margin: 0 0 3px; }
-    .pp .loc { color: var(--muted); margin-bottom: 4px; }
-    .pp .note { background: #fff4e5; border-left: 3px solid #f57c00; padding: 3px 6px; margin: 4px 0; font-size: 12.5px; }
-    .pp .note.stale { background: #eee; border-color: #888; }
+    .pp-head { display: flex; gap: 10px; align-items: flex-start; padding: 11px 38px 10px 12px;
+               background: #f4f5f7; background: color-mix(in srgb, var(--c) 13%, #fff); border-bottom: 3px solid var(--c); }
+    .pp-head .rf-mk { flex: 0 0 auto; margin-top: 1px; }
+    .pp h3 { font-size: 15px; margin: 0 0 2px; line-height: 1.35; }
+    .pp .loc { color: #444c56; font-size: 12.5px; }
+    .pp-body { padding: 8px 12px 11px; }
+    .pp .note { background: #fff4e5; border-left: 3px solid #f57c00; padding: 4px 8px; margin: 0 0 6px; font-size: 12.5px; border-radius: 0 6px 6px 0; }
+    .pp .note.stale { background: #f0f1f2; border-color: #888; }
     .pp .note.priv { background: #eef3ff; border-color: #3f51b5; }
-    .pp table { border-collapse: collapse; width: 100%; margin-top: 4px; }
-    .pp th { text-align: left; font-weight: 600; padding: 2px 8px 2px 0; vertical-align: top; white-space: nowrap; }
-    .pp td { padding: 2px 0; }
-    .pp ul { margin: 2px 0 0; padding-left: 18px; }
-    .pp a { word-break: break-all; }
-    .badge { display: inline-block; padding: 0 6px; border-radius: 8px; color: #fff; font-size: 12px; }
-    .badge.sev-minor { color: #222; }
+    .pp table { border-collapse: collapse; width: 100%; }
+    .pp th { text-align: left; font-weight: 600; color: var(--muted); font-size: 12.5px; padding: 4px 10px 4px 0; vertical-align: middle; white-space: nowrap; }
+    .pp td { padding: 4px 0; vertical-align: middle; }
+    .pp tr + tr th, .pp tr + tr td { border-top: 1px solid #f0f1f3; }
+    .pp .pass { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+    .pp .ago { color: var(--muted); font-size: 12px; }
+    .pp .ev { margin-top: 8px; }
+    .pp .ev b { font-size: 12.5px; color: var(--muted); }
+    .pp .ev ul { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 5px; }
+    .pp .ev a { display: inline-block; padding: 3px 10px; border-radius: 14px; background: #eef3ff; color: #1a4fb4;
+                text-decoration: none; font-size: 12.5px; border: 1px solid #d6e2ff; }
+    .pp .ev a:hover { background: #dfe9ff; }
+    .badge { display: inline-block; padding: 1px 9px; border-radius: 10px; color: #fff; font-size: 12.5px; font-weight: 600; }
     .badge.sev-severe { background: var(--severe); } .badge.sev-moderate { background: var(--moderate); }
-    .badge.sev-minor { background: var(--minor); } .badge.sev-unknown { background: var(--unknown); } .badge.sev-none { background: var(--none); }
+    .badge.sev-minor { background: var(--minor); color: #3d2b00; } .badge.sev-unknown { background: var(--unknown); }
+    .badge.sev-none { background: var(--none); }
 
     #chips { display: none; }
     /* ---------- mobile ---------- */
     @media (max-width: 640px) {
       #panel {
-        top: auto; bottom: 0; left: 0; right: 0; width: auto; max-height: 48%;
-        border-radius: 12px 12px 0 0; padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+        top: auto; bottom: 0; left: 0; right: 0; width: auto; max-height: 50%;
+        border-radius: 14px 14px 0 0; padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
         font-size: 13px;
       }
       #panel h1 { font-size: 15px; }
-      .pin { width: 22px; height: 22px; }
-      .pin.imp::after { font-size: 13px; }
       .leaflet-bottom .leaflet-control-attribution { margin-bottom: var(--panel-h, 0px); }
-      #chips { display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 4px; font-size: 12px; }
+      #chips { display: flex; flex-direction: column; gap: 3px; margin-top: 5px; font-size: 12px; }
+      #chips .row { display: flex; flex-wrap: wrap; gap: 3px 10px; align-items: center; }
       #chips span { display: inline-flex; align-items: center; gap: 4px; }
-      #chips .pin { width: 12px; height: 12px; border-width: 1px; }
-      #chips .pin.imp { box-shadow: 0 0 0 2px #000; }
-      #chips .pin.imp::after { font-size: 8px; }
+      #panel:has(details[open]) #chips { display: none; }
       .leaflet-control-zoom a { width: 36px; height: 36px; line-height: 36px; }
+      .lg-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -103,21 +126,10 @@
     <div id="summary"></div>
     <div id="checked"></div>
     <div id="error" role="alert"></div>
-    <div id="chips" aria-hidden="true">
-      <span><i class="pin sev-severe"></i>รุนแรง</span><span><i class="pin sev-moderate"></i>ปานกลาง</span>
-      <span><i class="pin sev-minor"></i>เล็กน้อย</span><span><i class="pin sev-unknown"></i>ไม่ทราบ</span>
-      <span><i class="pin sev-none"></i>ไม่มี</span><span><i class="pin sev-unknown imp"></i>ผ่านไม่ได้</span>
-    </div>
+    <div id="chips" aria-hidden="true"></div>
     <details id="legend">
       <summary>คำอธิบายสัญลักษณ์</summary>
-      <div class="lg"><span class="sw"><span class="pin sev-severe"></span></span>รุนแรง</div>
-      <div class="lg"><span class="sw"><span class="pin sev-moderate"></span></span>ปานกลาง</div>
-      <div class="lg"><span class="sw"><span class="pin sev-minor"></span></span>เล็กน้อย</div>
-      <div class="lg"><span class="sw"><span class="pin sev-unknown"></span></span>ไม่ทราบระดับ</div>
-      <div class="lg"><span class="sw"><span class="pin sev-none"></span></span>ไม่มีน้ำท่วม / น้ำลดแล้ว</div>
-      <div class="lg"><span class="sw"><span class="pin sev-unknown imp"></span></span>ถนนผ่านไม่ได้ (วงดำ + ✕)</div>
-      <div class="lg"><span class="sw"><span class="circle"></span></span>ตำแหน่งโดยประมาณ (ระดับตำบล/อำเภอ)</div>
-      <div class="lg"><span class="sw"><span class="pin sev-unknown stale"></span></span>ข้อมูลเก่า (ไม่มีอัปเดตเกิน 24 ชม.)</div>
+      <div id="legend-body"></div>
     </details>
     <div class="disclaimer">ข้อมูลรวบรวมจากโพสต์สาธารณะ อาจไม่ครบหรือไม่เป็นปัจจุบัน โปรดตรวจสอบกับหน่วยงานในพื้นที่</div>
   </section>
@@ -129,10 +141,17 @@
     var REFRESH_MS = 5 * 60 * 1000;                     // auto-refresh every 5 minutes
     // Rayong Province bbox (OSM relation 1908812) — see config/settings.json
     var RAYONG_BOUNDS = L.latLngBounds([12.2159732, 100.9844476], [13.1635573, 101.8310549]);
-    var SEV_COLOR = { severe: "#8b0000", moderate: "#f57c00", minor: "#fbc02d", unknown: "#9e9e9e", none: "#2e7d32" };
+    // mirrors config/settings.json -> marker_colors (unknown = neutral grey)
+    var SEV_COLOR = { severe: "#d32f2f", moderate: "#f57c00", minor: "#fbc02d", unknown: "#757575", none: "#388e3c" };
+    var SEV_INK = { minor: "#3d2b00" };                 // dark glyph on amber for contrast; white elsewhere
+    var SEV_ORDER = ["severe", "moderate", "minor", "unknown", "none"];
     var SEV_TH = { severe: "รุนแรง", moderate: "ปานกลาง", minor: "เล็กน้อย", unknown: "ไม่ทราบ", none: "ไม่มีน้ำท่วม / น้ำลดแล้ว" };
+    var SEV_HINT = { severe: "สูงกว่าเข่า / รถผ่านไม่ได้", moderate: "ถึงฟุตบาท–เข่า", minor: "น้ำขังเล็กน้อย", unknown: "ไม่ระบุระดับน้ำ", none: "น้ำลดแล้ว" };
     var PASS_TH = { all_vehicles: "ผ่านได้ทุกประเภท", large_vehicles_only: "รถใหญ่เท่านั้น", impassable: "ผ่านไม่ได้", unknown: "ไม่ทราบ" };
-    var STATUS_TH = { active: "มีรายงานล่าสุด", stale: "ข้อมูลเก่า (ไม่มีอัปเดตเกิน 24 ชม.)" };
+    var PASS_LEGEND = { impassable: "ผ่านไม่ได้ / ปิดถนน", large_vehicles_only: "เฉพาะรถใหญ่ (รถเล็กเลี่ยง)",
+                        all_vehicles: "รถผ่านได้ทุกประเภท", unknown: "ยังไม่ทราบว่ารถผ่านได้ไหม" };
+    var PASS_ORDER = ["impassable", "large_vehicles_only", "all_vehicles", "unknown"];
+    var STATUS_TH = { active: "มีรายงานล่าสุด", stale: "ข้อมูลเก่า (ไม่มีอัปเดตเกิน 24 ชม.)", inactive: "น้ำลดแล้ว" };
     var SHOW_STATUS = { active: true, stale: true };   // never plot needs_review / inactive
     var APPROX_RADIUS_M = { subdistrict: 1500, district: 4000 };
     var APPROX_LABEL = "ตำแหน่งโดยประมาณ (ระดับตำบล/อำเภอ)";
@@ -140,6 +159,85 @@
     var isMobile = window.matchMedia("(max-width: 640px)").matches;
     var legend = document.getElementById("legend");
     if (!isMobile) legend.open = true;
+
+    // ------------------------------------------------------------------
+    // Symbol factory: ONE function draws map markers, legend swatches and popup icons
+    // ------------------------------------------------------------------
+    // passability glyphs, drawn in a 24x24 box (fg = glyph colour, bg = marker colour)
+    function glyph(pass, fg, bg) {
+      switch (pass) {
+        case "impassable":   // no-entry sign
+          return '<circle cx="12" cy="12" r="9.6" fill="' + fg + '"/>' +
+                 '<rect x="5.4" y="9.9" width="13.2" height="4.2" rx="1.1" fill="' + bg + '"/>';
+        case "large_vehicles_only":   // truck
+          return '<rect x="1.2" y="5.6" width="13.4" height="10" rx="1.3" fill="' + fg + '"/>' +
+                 '<path d="M15.6 8.8h3.8l3.5 4v2.8h-7.3z" fill="' + fg + '"/>' +
+                 '<path d="M17.1 10.2h1.8l1.9 2.2h-3.7z" fill="' + bg + '"/>' +
+                 '<circle cx="6" cy="17.4" r="2.6" fill="' + fg + '" stroke="' + bg + '" stroke-width="1.4"/>' +
+                 '<circle cx="18.3" cy="17.4" r="2.6" fill="' + fg + '" stroke="' + bg + '" stroke-width="1.4"/>';
+        case "all_vehicles":   // check mark
+          return '<path d="M5 12.6l4.4 4.4L19 7.4" fill="none" stroke="' + fg + '" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>';
+        case "blank": return "";
+        default:   // water waves = flooding reported, passability unknown
+          return '<path d="M2.5 9.3c1.6-1.7 3.1-1.7 4.7 0s3.1 1.7 4.7 0 3.1-1.7 4.7 0 3.1 1.7 4.7 0M2.5 15.3c1.6-1.7 3.1-1.7 4.7 0s3.1 1.7 4.7 0 3.1-1.7 4.7 0 3.1 1.7 4.7 0"' +
+                 ' fill="none" stroke="' + fg + '" stroke-width="2.5" stroke-linecap="round"/>';
+      }
+    }
+    var PIN_PATH = "M16 42.6C11.2 35.4 2.6 26.6 2.6 16a13.4 13.4 0 0 1 26.8 0c0 10.6-8.6 19.4-13.4 26.6z";
+
+    /* opts: sev, pass, shape ("pin" exact | "dot" approximate), size (px width), stale, pulse, count, neutral (legend glyph demo) */
+    function symbol(o) {
+      var sev = SEV_COLOR[o.sev] ? o.sev : "unknown";
+      var col = o.neutral ? "#fff" : SEV_COLOR[sev];
+      var fg = o.neutral ? "#37474f" : (SEV_INK[sev] || "#fff");
+      var outline = o.neutral ? "#37474f" : (o.stale ? "#455a64" : "#fff");
+      var dash = o.stale ? ' stroke-dasharray="3.2 2.4"' : "";
+      var sw = o.neutral ? 2 : 2.6;
+      var w = Math.round(o.size || 30), pin = o.shape === "pin";
+      var h = pin ? Math.round(w * 44 / 32) : w;
+      var body = pin
+        ? '<path d="' + PIN_PATH + '" fill="' + col + '" stroke="' + outline + '" stroke-width="' + sw + '"' + dash + ' stroke-linejoin="round"/>'
+        : '<circle cx="16" cy="16" r="13.4" fill="' + col + '" stroke="' + outline + '" stroke-width="' + sw + '"' + dash + '/>';
+      var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 32 ' + (pin ? 44 : 32) + '" aria-hidden="true" focusable="false">' +
+                body + '<g transform="translate(16 16) scale(.8) translate(-12 -12)">' + glyph(o.pass, fg, col) + "</g></svg>";
+      var head = w * 26.8 / 32, cx = w / 2, cy = w / 2;         // head circle size + centre (same for pin and dot)
+      var pulse = o.pulse ? '<span class="rf-pulse" style="left:' + (cx - head / 2) + "px;top:" + (cy - head / 2) + "px;width:" + head + "px;height:" + head + 'px"></span>' : "";
+      var cnt = (o.count >= 2) ? '<span class="rf-cnt">' + (o.count > 99 ? "99+" : o.count) + "</span>" : "";
+      return { w: w, h: h, pin: pin,
+               html: '<span class="rf-mk' + (o.stale ? " is-stale" : "") + '" style="--c:' + SEV_COLOR[sev] + ";width:" + w + "px;height:" + h + 'px">' + pulse + svg + cnt + "</span>" };
+    }
+    // size grows a little with independent reports: 1 → 100 %, 2 → 110 %, 3–4 → 120 %, 5+ → 130 %
+    function sizeFor(n) { n = Number(n) || 1; var base = isMobile ? 34 : 30; return base * (n >= 5 ? 1.3 : n >= 3 ? 1.2 : n >= 2 ? 1.1 : 1); }
+
+    function buildLegend() {
+      var h = '<div class="lg-h">สีหมุด = ระดับน้ำท่วม</div><div class="lg-grid">';
+      SEV_ORDER.forEach(function (s) {
+        h += '<div class="lg" title="' + SEV_HINT[s] + '"><span class="sw">' + symbol({ sev: s, pass: "blank", shape: "dot", size: 20 }).html +
+             "</span>" + (s === "none" ? "น้ำลดแล้ว" : SEV_TH[s] + (s === "unknown" ? "ระดับ" : "")) + "</div>";
+      });
+      h += '</div><div class="lg-h">สัญลักษณ์ในหมุด = การสัญจร</div>';
+      PASS_ORDER.forEach(function (p) {
+        h += '<div class="lg"><span class="sw">' + symbol({ pass: p, shape: "dot", size: 24, neutral: true }).html + "</span>" + PASS_LEGEND[p] + "</div>";
+      });
+      h += '<div class="lg-h">รูปแบบหมุด</div>';
+      h += '<div class="lg"><span class="sw">' + symbol({ sev: "moderate", pass: "unknown", shape: "pin", size: 21 }).html + "</span>ตำแหน่งชัดเจน (จุด / ช่วงถนน)</div>";
+      h += '<div class="lg"><span class="sw"><span class="area">' + symbol({ sev: "unknown", pass: "unknown", shape: "dot", size: 18 }).html +
+           "</span></span>ตำแหน่งโดยประมาณ (วงกลมจาง = ระดับตำบล)</div>";
+      h += '<div class="lg"><span class="sw">' + symbol({ sev: "severe", pass: "unknown", shape: "dot", size: 18, pulse: true }).html + "</span>วงกระเพื่อม = รุนแรง มีรายงานล่าสุด</div>";
+      h += '<div class="lg"><span class="sw">' + symbol({ sev: "moderate", pass: "unknown", shape: "dot", size: 22, stale: true }).html + "</span>จาง + ขอบประ = ข้อมูลเก่า (เกิน 24 ชม.)</div>";
+      h += '<div class="lg"><span class="sw">' + symbol({ sev: "minor", pass: "unknown", shape: "dot", size: 20, count: 2 }).html +
+           "</span>ตัวเลข = จำนวนรายงานอิสระ (ยิ่งมากหมุดยิ่งใหญ่)</div>";
+      byId("legend-body").innerHTML = h;
+      // compact chips for the mobile bottom sheet (visible while the legend is closed)
+      var c = '<div class="row">';
+      SEV_ORDER.forEach(function (s) { c += '<span><i class="dot" style="background:' + SEV_COLOR[s] + '"></i>' + (s === "none" ? "น้ำลด" : SEV_TH[s]) + "</span>"; });
+      c += '</div><div class="row">';
+      PASS_ORDER.forEach(function (p) {
+        c += "<span>" + symbol({ pass: p, shape: "dot", size: 18, neutral: true }).html +
+             ({ impassable: "ผ่านไม่ได้", large_vehicles_only: "รถใหญ่", all_vehicles: "ผ่านได้", unknown: "ไม่ทราบ" })[p] + "</span>";
+      });
+      byId("chips").innerHTML = c + "</div>";
+    }
 
     var map = L.map("map", { zoomControl: true, tap: true, preferCanvas: false });
     map.fitBounds(RAYONG_BOUNDS);
@@ -150,12 +248,12 @@
     // add OSM tiles only once the first view is settled, so we don't request (and then abort) province-view tiles
     function addTiles() { if (!map.hasLayer(tiles)) tiles.addTo(map); }
     setTimeout(addTiles, 4000);
-    map.createPane("approx"); map.getPane("approx").style.zIndex = 450;   // circles below pins (markerPane = 600)
+    map.createPane("approx"); map.getPane("approx").style.zIndex = 450;   // area circles below markers (markerPane = 600)
 
     var layer = L.layerGroup().addTo(map);
     var firstFitDone = false;
     var els = { updated: byId("updated"), summary: byId("summary"), checked: byId("checked"), error: byId("error") };
-    window.RF = { rendered: 0, lastLoad: null, errors: [] };  // simple status hook (used by tests)
+    window.RF = { rendered: 0, lastLoad: null, errors: [], map: map };  // simple status hook (used by tests)
 
     function byId(id) { return document.getElementById(id); }
     function esc(s) {
@@ -204,33 +302,38 @@
     function popupHtml(p, approx) {
       var sev = SEV_TH[p.severity] ? p.severity : "unknown";
       var pass = PASS_TH[p.passability] ? p.passability : "unknown";
+      var stale = p.status === "stale";
       var links = publicLinks(p);
       var h = '<div class="pp">';
-      h += "<h3>" + esc(p.title || "จุดน้ำท่วม") + "</h3>";
-      if (p.location_text) h += '<div class="loc">📍 ' + esc(p.location_text) + "</div>";
+      h += '<div class="pp-head" style="--c:' + SEV_COLOR[sev] + '">' +
+           symbol({ sev: sev, pass: pass, shape: approx ? "dot" : "pin", size: 26, stale: stale }).html +
+           "<div><h3>" + esc(p.title || "จุดน้ำท่วม") + "</h3>" +
+           (p.location_text ? '<div class="loc">📍 ' + esc(p.location_text) + "</div>" : "") + "</div></div>";
+      h += '<div class="pp-body">';
       if (approx) h += '<div class="note">' + APPROX_LABEL + "</div>";
-      if (p.status === "stale") h += '<div class="note stale">' + STATUS_TH.stale + "</div>";
+      if (stale) h += '<div class="note stale">' + STATUS_TH.stale + "</div>";
       h += "<table>";
       h += '<tr><th>ความรุนแรง</th><td><span class="badge sev-' + sev + '">' + esc(SEV_TH[sev]) + "</span></td></tr>";
-      h += "<tr><th>รถผ่านได้ไหม</th><td>" + (pass === "impassable" ? "⛔ " : "") + esc(PASS_TH[pass]) + "</td></tr>";
+      h += '<tr><th>รถผ่านได้ไหม</th><td><span class="pass">' + symbol({ pass: pass, shape: "dot", size: 20, neutral: true }).html +
+           esc(PASS_TH[pass]) + "</span></td></tr>";
       h += "<tr><th>อัปเดตล่าสุด</th><td>" + esc(fmtBkk(p.last_reported_at)) +
-           (p.last_reported_at ? ' <span style="color:#5f6b76">(' + esc(ago(p.last_reported_at)) + ")</span>" : "") + "</td></tr>";
+           (p.last_reported_at ? ' <span class="ago">(' + esc(ago(p.last_reported_at)) + ")</span>" : "") + "</td></tr>";
       h += "<tr><th>รายงานอิสระ</th><td>" + esc(Number(p.independent_report_count) || 0) + " รายงาน</td></tr>";
       h += "</table>";
       if (isPrivate(p)) {
-        h += '<div class="note priv">ข้อมูลนี้มาจากกลุ่มส่วนตัว จึงแสดงเฉพาะข้อเท็จจริง ไม่แสดงลิงก์หรือข้อความต้นทาง</div>';
+        h += '<div class="note priv" style="margin-top:8px">ข้อมูลนี้มาจากกลุ่มส่วนตัว จึงแสดงเฉพาะข้อเท็จจริง ไม่แสดงลิงก์หรือข้อความต้นทาง</div>';
       } else if (links.length) {
-        h += "<div><b>หลักฐาน:</b><ul>";
+        h += '<div class="ev"><b>หลักฐาน:</b><ul>';
         links.forEach(function (u, i) {
           h += '<li><a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer nofollow">' +
-               esc(hostLabel(u)) + " โพสต์ที่ " + (i + 1) + "</a></li>";
+               esc(hostLabel(u)) + " โพสต์ที่ " + (i + 1) + " ↗</a></li>";
         });
         h += "</ul></div>";
-        if (p.evidence_visibility === "mixed") h += '<div class="note priv">หลักฐานบางส่วนมาจากกลุ่มส่วนตัว จึงไม่แสดงลิงก์ส่วนนั้น</div>';
+        if (p.evidence_visibility === "mixed") h += '<div class="note priv" style="margin-top:6px">หลักฐานบางส่วนมาจากกลุ่มส่วนตัว จึงไม่แสดงลิงก์ส่วนนั้น</div>';
       } else {
-        h += "<div><b>หลักฐาน:</b> -</div>";
+        h += '<div class="ev"><b>หลักฐาน:</b> -</div>';
       }
-      h += "</div>";
+      h += "</div></div>";
       return h;
     }
 
@@ -247,29 +350,37 @@
         if (!isFinite(lat) || !isFinite(lon)) return;
         var ll = L.latLng(lat, lon);
         var sev = SEV_COLOR[p.severity] ? p.severity : "unknown";
-        var stale = p.status === "stale";
-        var imp = p.passability === "impassable";
+        var pass = PASS_TH[p.passability] ? p.passability : "unknown";
+        var stale = p.status === "stale" || p.status === "inactive";
+        var imp = pass === "impassable";
         var approx = Object.prototype.hasOwnProperty.call(APPROX_RADIUS_M, p.precision);
-        var popOpts = { maxWidth: Math.min(320, window.innerWidth - 50), autoPanPadding: [20, 20] };
-        var obj;
-        if (approx) {
-          obj = L.circle(ll, {
+        var popOpts = { maxWidth: Math.min(330, window.innerWidth - 40), minWidth: Math.min(250, window.innerWidth - 60),
+                        autoPanPadding: [20, 20], className: "rf-popup" };
+        var html = popupHtml(p, approx);
+        if (approx) {   // soft, low-opacity area behind the marker: location is approximate
+          var area = L.circle(ll, {
             pane: "approx", radius: APPROX_RADIUS_M[p.precision],
-            color: imp ? "#000" : SEV_COLOR[sev], weight: imp ? 4 : 2, dashArray: "6 5",
-            fillColor: SEV_COLOR[sev], fillOpacity: stale ? 0.12 : 0.28, opacity: stale ? 0.5 : 0.95
+            color: SEV_COLOR[sev], weight: 1.5, opacity: stale ? 0.35 : 0.6, dashArray: "4 6",
+            fillColor: SEV_COLOR[sev], fillOpacity: stale ? 0.06 : 0.13
           });
-          obj.bindTooltip(APPROX_LABEL, { direction: "top", sticky: true });
-          bounds.extend(obj.getLatLng().toBounds(APPROX_RADIUS_M[p.precision] * 2));
+          area.bindTooltip(APPROX_LABEL, { direction: "top", sticky: true });
+          area.bindPopup(html, popOpts);
+          newLayer.addLayer(area);
+          bounds.extend(area.getLatLng().toBounds(APPROX_RADIUS_M[p.precision] * 2));
         } else {
-          obj = L.marker(ll, {
-            icon: L.divIcon({ className: "rf-icon", iconSize: isMobile ? [22, 22] : [18, 18],
-                              html: '<span class="pin sev-' + sev + (imp ? " imp" : "") + (stale ? " stale" : "") + '"></span>' }),
-            title: p.title || "", alt: p.title || "", keyboard: true,
-            zIndexOffset: stale ? -1000 : (imp ? 1000 : (sev === "severe" ? 500 : 0))
-          });
           bounds.extend(ll);
         }
-        obj.bindPopup(popupHtml(p, approx), popOpts);
+        var sym = symbol({ sev: sev, pass: pass, shape: approx ? "dot" : "pin", size: sizeFor(p.independent_report_count),
+                           stale: stale, pulse: sev === "severe" && p.status === "active",
+                           count: Number(p.independent_report_count) || 0 });
+        var obj = L.marker(ll, {
+          icon: L.divIcon({ className: "rf-icon", html: sym.html, iconSize: [sym.w, sym.h],
+                            iconAnchor: sym.pin ? [sym.w / 2, sym.h * 42.6 / 44] : [sym.w / 2, sym.h / 2],
+                            popupAnchor: [0, sym.pin ? -sym.h * 0.9 : -sym.h / 2] }),
+          title: p.title || "", alt: p.title || "", keyboard: true, riseOnHover: true,
+          zIndexOffset: stale ? -1000 : (imp ? 1000 : (sev === "severe" ? 500 : 0))
+        });
+        obj.bindPopup(html, popOpts);
         newLayer.addLayer(obj);
         n++; if (stale) nStale++; else nActive++;
       });
@@ -313,6 +424,7 @@
     }
     function showError(msg) { els.error.textContent = msg; els.error.style.display = "block"; }
 
+    buildLegend();
     load();
     var lastTick = Date.now();
     setInterval(function () { lastTick = Date.now(); load(); }, REFRESH_MS);

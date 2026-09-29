@@ -1,7 +1,7 @@
 {
   "type": "FeatureCollection",
   "name": "rayong_floods",
-  "generated_at": "2026-09-29T09:49:51+07:00",
+  "generated_at": "2026-09-29T10:37:53+07:00",
   "bbox": [
     100.9844476,
     12.2159732,
@@ -37,7 +37,7 @@
         "location_text": "จุดหน้าเทศบาล ต.บ้านค่าย จ.ระยอง",
         "precision": "subdistrict",
         "geocode_source": "rayong-osm-n1747791265",
-        "marker_color": "#7b1fa2",
+        "marker_color": "#757575",
         "is_greyed": false
       }
     },
@@ -134,7 +134,7 @@
         "location_text": "ม.5 เชิงเนิน ซ.รร.หนองจอก",
         "precision": "road_segment",
         "geocode_source": "https://nominatim.openstreetmap.org/lookup?osm_ids=N3003528936&format=jsonv2",
-        "marker_color": "#7b1fa2",
+        "marker_color": "#757575",
         "is_greyed": false
       }
     },
@@ -233,40 +233,7 @@
         "location_text": "ถนนเส้นหลังเซ็นทรัลระยอง (check-in: หนองมะหาด ต.ทับมา); หลังเซนทรัล",
         "precision": "road_segment",
         "geocode_source": "https://nominatim.openstreetmap.org/lookup?osm_ids=W349155419&format=jsonv2",
-        "marker_color": "#7b1fa2",
-        "is_greyed": false
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "inc-e2e01-lotus-rayong-hospital-junction",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          101.2764916,
-          12.6827662
-        ]
-      },
-      "properties": {
-        "incident_id": "inc-e2e01-lotus-rayong-hospital-junction",
-        "title": "น้ำท่วมครึ่งล้อ เส้นโลตัส–แยกไฟแดง รพ.ระยอง รถเล็กควรเลี่ยง",
-        "status": "active",
-        "severity": "moderate",
-        "passability": "large_vehicles_only",
-        "last_reported_at": "2026-09-29T08:05:00+07:00",
-        "first_reported_at": "2026-09-29T07:17:00+07:00",
-        "independent_report_count": 2,
-        "repost_count": 0,
-        "evidence_urls": [
-          "https://www.facebook.com/SiwabestBuripha/posts/pfbid0y4V1P2y11EvA4xUrF4cEQKti2BCSbjSmsJMwiHAgU3Y7vQ7Hx7x7g1653abjUFxGl",
-          "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=2557770978030029"
-        ],
-        "evidence_visibility": "public",
-        "private_evidence_count": 0,
-        "location_text": "เส้น โลตัส-แยกไฟแดง รพ.ระยอง; ไฟแดงรพ.ระยอง",
-        "precision": "road_segment",
-        "geocode_source": "rayong-osm-w1215983984",
-        "marker_color": "#f57c00",
+        "marker_color": "#757575",
         "is_greyed": false
       }
     },
@@ -298,7 +265,44 @@
         "location_text": "ศุภาลัยเบลล่า ทับมา ระยอง",
         "precision": "point",
         "geocode_source": "https://nominatim.openstreetmap.org/lookup?osm_ids=W1268120513&format=jsonv2",
-        "marker_color": "#7b1fa2",
+        "marker_color": "#757575",
+        "is_greyed": false
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "inc-e2e01-lotus-rayong-hospital-junction",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          101.2764916,
+          12.6827662
+        ]
+      },
+      "properties": {
+        "incident_id": "inc-e2e01-lotus-rayong-hospital-junction",
+        "title": "น้ำท่วมครึ่งล้อ เส้นโลตัส–แยกไฟแดง รพ.ระยอง รถเล็กควรเลี่ยง",
+        "status": "active",
+        "severity": "moderate",
+        "passability": "large_vehicles_only",
+        "last_reported_at": "2026-09-29T09:12:00+07:00",
+        "first_reported_at": "2026-09-29T07:17:00+07:00",
+        "independent_report_count": 3,
+        "repost_count": 2,
+        "evidence_urls": [
+          "https://www.facebook.com/SiwabestBuripha/posts/pfbid0y4V1P2y11EvA4xUrF4cEQKti2BCSbjSmsJMwiHAgU3Y7vQ7Hx7x7g1653abjUFxGl",
+          "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=2557770978030029",
+          "https://www.facebook.com/reel/2153001405586517",
+          "https://www.facebook.com/manee.chotiros.794/posts/pfbid025GL9ippPyvW7TqRW4Dj4tzAkH14ZxCSsT3GWXCNJ3G4dWXPwiDXEpsT7xx4mUGuKl",
+          "https://www.facebook.com/sumleee/posts/pfbid026Wr3uPxkRLUFJcMMC6XNmi8cNQP3GQ53CD2tZieQWnns4rstjWe2tofQ88uRXn1cl",
+          "https://www.facebook.com/ZoomRayong/videos/2754710198367937/"
+        ],
+        "evidence_visibility": "public",
+        "private_evidence_count": 0,
+        "location_text": "เส้น โลตัส-แยกไฟแดง รพ.ระยอง; ไฟแดงรพ.ระยอง",
+        "precision": "road_segment",
+        "geocode_source": "rayong-osm-w1215983984",
+        "marker_color": "#f57c00",
         "is_greyed": false
       }
     }

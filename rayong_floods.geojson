@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
  "name": "rayong_floods",
- "generated_at": "2026-09-29T18:11:15+07:00",
+ "generated_at": "2026-09-29T19:13:01+07:00",
  "bbox": [
   100.9844476,
   12.2159732,
@@ -373,6 +373,43 @@
     "precision": "road_segment",
     "geocode_source": "rayong-osm-n2751694937",
     "marker_color": "#757575",
+    "is_greyed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "inc-e2e01-klaeng-hospital-transfer",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     101.6704213,
+     12.7854415
+    ]
+   },
+   "properties": {
+    "incident_id": "inc-e2e01-klaeng-hospital-transfer",
+    "title": "กู้ภัยเคลื่อนย้ายผู้ป่วย โรงพยาบาลแกลง",
+    "status": "active",
+    "severity": "severe",
+    "passability": "unknown",
+    "last_reported_at": "2026-09-29T17:15:19+07:00",
+    "first_reported_at": "2026-09-29T03:03:21+07:00",
+    "independent_report_count": 4,
+    "repost_count": 1,
+    "evidence_urls": [
+     "https://x.com/Hook31_Thailand/status/2104663272414990591",
+     "https://x.com/Hook31_Thailand/status/2104667737842909691",
+     "https://x.com/armypr_news/status/2104745477161787775",
+     "https://x.com/ninaBkk/status/2104779526744207738",
+     "https://x.com/MY_KPS_01/status/2104875447117090964",
+     "https://x.com/hfocusnews/status/2104877676104470578"
+    ],
+    "evidence_visibility": "public",
+    "private_evidence_count": 0,
+    "location_text": "ที่ โรงพยาบาล แกลง",
+    "precision": "point",
+    "geocode_source": "nominatim:osm-node-7128975381",
+    "marker_color": "#d32f2f",
     "is_greyed": false
    }
   }

@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
  "name": "rayong_floods",
- "generated_at": "2026-09-30T13:20:59+07:00",
+ "generated_at": "2026-09-30T15:11:12+07:00",
  "bbox": [
   100.9844476,
   12.2159732,
@@ -9,80 +9,6 @@
   13.1635573
  ],
  "features": [
-  {
-   "type": "Feature",
-   "id": "inc-e2e01-lotus-rayong-hospital-junction",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     101.2764916,
-     12.6827662
-    ]
-   },
-   "properties": {
-    "incident_id": "inc-e2e01-lotus-rayong-hospital-junction",
-    "title": "น้ำท่วมครึ่งล้อ เส้นโลตัส–แยกไฟแดง รพ.ระยอง รถเล็กควรเลี่ยง",
-    "status": "active",
-    "severity": "severe",
-    "passability": "large_vehicles_only",
-    "last_reported_at": "2026-09-29T13:31:20+07:00",
-    "first_reported_at": "2026-09-29T07:17:00+07:00",
-    "independent_report_count": 5,
-    "repost_count": 2,
-    "evidence_urls": [
-     "https://www.facebook.com/SiwabestBuripha/posts/pfbid0y4V1P2y11EvA4xUrF4cEQKti2BCSbjSmsJMwiHAgU3Y7vQ7Hx7x7g1653abjUFxGl",
-     "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=2557770978030029",
-     "https://www.facebook.com/reel/2153001405586517",
-     "https://www.facebook.com/manee.chotiros.794/posts/pfbid025GL9ippPyvW7TqRW4Dj4tzAkH14ZxCSsT3GWXCNJ3G4dWXPwiDXEpsT7xx4mUGuKl",
-     "https://www.facebook.com/sumleee/posts/pfbid026Wr3uPxkRLUFJcMMC6XNmi8cNQP3GQ53CD2tZieQWnns4rstjWe2tofQ88uRXn1cl",
-     "https://www.facebook.com/ZoomRayong/videos/2754710198367937/",
-     "https://x.com/Ruamduay/status/2104779532595339427",
-     "https://74.rayongall.com/ry/flood-map/"
-    ],
-    "evidence_visibility": "public",
-    "private_evidence_count": 0,
-    "location_text": "เส้น โลตัส-แยกไฟแดง รพ.ระยอง; ไฟแดงรพ.ระยอง",
-    "precision": "road_segment",
-    "geocode_source": "rayong-osm-w1215983984",
-    "marker_color": "#d32f2f",
-    "is_greyed": false
-   }
-  },
-  {
-   "type": "Feature",
-   "id": "inc-e2e01-supalai-ville-choeng-noen",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     101.3044,
-     12.6747
-    ]
-   },
-   "properties": {
-    "incident_id": "inc-e2e01-supalai-ville-choeng-noen",
-    "title": "น้ำท่วมเกือบมิดรั้วบ้านชั้น 1 ศุภาลัยวิลล์ระยอง ต.เชิงเนิน",
-    "status": "active",
-    "severity": "severe",
-    "passability": "impassable",
-    "last_reported_at": "2026-09-29T14:08:57+07:00",
-    "first_reported_at": "2026-09-28T21:25:38+07:00",
-    "independent_report_count": 2,
-    "repost_count": 2,
-    "evidence_urls": [
-     "https://x.com/myeyesnate_/status/2104578283199439169",
-     "https://x.com/faifull1996/status/2104742894758510699",
-     "https://x.com/MM_TMK539/status/2104810462340960299",
-     "https://74.rayongall.com/ry/flood-map/"
-    ],
-    "evidence_visibility": "public",
-    "private_evidence_count": 0,
-    "location_text": "ศุภาลัยวิลล์ระยอง ต.เชิงเนิน อ.เมือง จ.ระยอง",
-    "precision": "subdistrict",
-    "geocode_source": "rayong-subdistrict-210102",
-    "marker_color": "#d32f2f",
-    "is_greyed": false
-   }
-  },
   {
    "type": "Feature",
    "id": "inc-1643-soi-behind-wat-ban-don-school-choeng-noen",
@@ -235,9 +161,9 @@
     "status": "active",
     "severity": "severe",
     "passability": "large_vehicles_only",
-    "last_reported_at": "2026-09-30T11:00:00+07:00",
+    "last_reported_at": "2026-09-30T14:21:31+07:00",
     "first_reported_at": "2026-09-29T07:02:00+07:00",
-    "independent_report_count": 10,
+    "independent_report_count": 11,
     "repost_count": 0,
     "evidence_urls": [
      "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=961592686351770",
@@ -248,7 +174,8 @@
      "https://www.facebook.com/prdrayong/posts/pfbid02pmQt6J6hwoKi6dZSRynrDBU1YGfvLHQgsKoW2cP9vt6UMuGVvVmGY9bvJEXLyELkl",
      "https://x.com/Ruamduay/status/2105142509932515440",
      "https://facebook.com/share/p/19VhyUcfcr3/",
-     "https://x.com/XDaddyLove/status/2105166489980694616"
+     "https://x.com/XDaddyLove/status/2105166489980694616",
+     "https://x.com/js100radio/status/2105196326145102165"
     ],
     "evidence_visibility": "mixed",
     "private_evidence_count": 1,
@@ -256,38 +183,6 @@
     "precision": "point",
     "geocode_source": "rayong-osm-n1634530796",
     "marker_color": "#d32f2f",
-    "is_greyed": false
-   }
-  },
-  {
-   "type": "Feature",
-   "id": "inc-1249-ban-don-junction-choeng-noen",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     101.2890605,
-     12.6943785
-    ]
-   },
-   "properties": {
-    "incident_id": "inc-1249-ban-don-junction-choeng-noen",
-    "title": "สี่แยกบ้านดอน ต.เชิงเนิน ยังมีน้ำท่วมขัง",
-    "status": "active",
-    "severity": "unknown",
-    "passability": "unknown",
-    "last_reported_at": "2026-09-30T11:10:00+07:00",
-    "first_reported_at": "2026-09-30T11:10:00+07:00",
-    "independent_report_count": 1,
-    "repost_count": 0,
-    "evidence_urls": [
-     "https://www.facebook.com/prdrayong/posts/pfbid0ATyHNHaHFU7GufDcfbCP8BKTzNEWUrQAUkJJJ6AwXXGbAdvQgurT4TStDaMETyeNl"
-    ],
-    "evidence_visibility": "public",
-    "private_evidence_count": 0,
-    "location_text": "สี่แยกบ้านดอน ตำบลเชิงเนิน อำเภอเมืองระยอง",
-    "precision": "point",
-    "geocode_source": "rayong-osm-n2751574370",
-    "marker_color": "#757575",
     "is_greyed": false
    }
   },
@@ -307,9 +202,9 @@
     "status": "active",
     "severity": "severe",
     "passability": "large_vehicles_only",
-    "last_reported_at": "2026-09-30T11:20:00+07:00",
+    "last_reported_at": "2026-09-30T14:21:31+07:00",
     "first_reported_at": "2026-09-29T10:00:00+07:00",
-    "independent_report_count": 5,
+    "independent_report_count": 6,
     "repost_count": 3,
     "evidence_urls": [
      "https://www.facebook.com/Social.RayongTH/posts/pfbid0iVCQUPKPRc8np6h3KLKuvX1GRzfCcBqJhUvit5Cc177PmDTCUczr6pZqcx6PWmUgl",
@@ -318,7 +213,8 @@
      "https://www.facebook.com/prdrayong/posts/pfbid036x5BrzQXSStj4iqmh2r6rrAuvsCcUF4mLtNTwLCwZCVVzP3DBrC5RFD4W9wx69k3l",
      "https://x.com/mymelody1402/status/2105123232705806653",
      "https://www.facebook.com/prdrayong/posts/pfbid028LEbBSZTyTuHna32oBXB9xeM4HgQo1xokZNDzkPuEniyvEc9feMNtnV6BuNfQvH5l",
-     "https://x.com/js100radio/status/2105152573099647122"
+     "https://x.com/js100radio/status/2105152573099647122",
+     "https://x.com/js100radio/status/2105196326145102165"
     ],
     "evidence_visibility": "mixed",
     "private_evidence_count": 1,
@@ -326,6 +222,39 @@
     "precision": "point",
     "geocode_source": "rayong-osm-n1882547194",
     "marker_color": "#d32f2f",
+    "is_greyed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "inc-1249-ban-don-junction-choeng-noen",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     101.2890605,
+     12.6943785
+    ]
+   },
+   "properties": {
+    "incident_id": "inc-1249-ban-don-junction-choeng-noen",
+    "title": "สี่แยกบ้านดอน ต.เชิงเนิน ยังมีน้ำท่วมขัง",
+    "status": "active",
+    "severity": "unknown",
+    "passability": "large_vehicles_only",
+    "last_reported_at": "2026-09-30T14:21:31+07:00",
+    "first_reported_at": "2026-09-30T11:10:00+07:00",
+    "independent_report_count": 2,
+    "repost_count": 0,
+    "evidence_urls": [
+     "https://www.facebook.com/prdrayong/posts/pfbid0ATyHNHaHFU7GufDcfbCP8BKTzNEWUrQAUkJJJ6AwXXGbAdvQgurT4TStDaMETyeNl",
+     "https://x.com/js100radio/status/2105196326145102165"
+    ],
+    "evidence_visibility": "public",
+    "private_evidence_count": 0,
+    "location_text": "สี่แยกบ้านดอน ตำบลเชิงเนิน อำเภอเมืองระยอง",
+    "precision": "point",
+    "geocode_source": "rayong-osm-n2751574370",
+    "marker_color": "#757575",
     "is_greyed": false
    }
   },
@@ -522,6 +451,80 @@
     "location_text": "ม.5 เชิงเนิน ซ.รร.หนองจอก",
     "precision": "road_segment",
     "geocode_source": "https://nominatim.openstreetmap.org/lookup?osm_ids=N3003528936&format=jsonv2",
+    "marker_color": "#9e9e9e",
+    "is_greyed": true
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "inc-e2e01-lotus-rayong-hospital-junction",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     101.2764916,
+     12.6827662
+    ]
+   },
+   "properties": {
+    "incident_id": "inc-e2e01-lotus-rayong-hospital-junction",
+    "title": "น้ำท่วมครึ่งล้อ เส้นโลตัส–แยกไฟแดง รพ.ระยอง รถเล็กควรเลี่ยง",
+    "status": "stale",
+    "severity": "severe",
+    "passability": "large_vehicles_only",
+    "last_reported_at": "2026-09-29T13:31:20+07:00",
+    "first_reported_at": "2026-09-29T07:17:00+07:00",
+    "independent_report_count": 5,
+    "repost_count": 2,
+    "evidence_urls": [
+     "https://www.facebook.com/SiwabestBuripha/posts/pfbid0y4V1P2y11EvA4xUrF4cEQKti2BCSbjSmsJMwiHAgU3Y7vQ7Hx7x7g1653abjUFxGl",
+     "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=2557770978030029",
+     "https://www.facebook.com/reel/2153001405586517",
+     "https://www.facebook.com/manee.chotiros.794/posts/pfbid025GL9ippPyvW7TqRW4Dj4tzAkH14ZxCSsT3GWXCNJ3G4dWXPwiDXEpsT7xx4mUGuKl",
+     "https://www.facebook.com/sumleee/posts/pfbid026Wr3uPxkRLUFJcMMC6XNmi8cNQP3GQ53CD2tZieQWnns4rstjWe2tofQ88uRXn1cl",
+     "https://www.facebook.com/ZoomRayong/videos/2754710198367937/",
+     "https://x.com/Ruamduay/status/2104779532595339427",
+     "https://74.rayongall.com/ry/flood-map/"
+    ],
+    "evidence_visibility": "public",
+    "private_evidence_count": 0,
+    "location_text": "เส้น โลตัส-แยกไฟแดง รพ.ระยอง; ไฟแดงรพ.ระยอง",
+    "precision": "road_segment",
+    "geocode_source": "rayong-osm-w1215983984",
+    "marker_color": "#9e9e9e",
+    "is_greyed": true
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "inc-e2e01-supalai-ville-choeng-noen",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     101.3044,
+     12.6747
+    ]
+   },
+   "properties": {
+    "incident_id": "inc-e2e01-supalai-ville-choeng-noen",
+    "title": "น้ำท่วมเกือบมิดรั้วบ้านชั้น 1 ศุภาลัยวิลล์ระยอง ต.เชิงเนิน",
+    "status": "stale",
+    "severity": "severe",
+    "passability": "impassable",
+    "last_reported_at": "2026-09-29T14:08:57+07:00",
+    "first_reported_at": "2026-09-28T21:25:38+07:00",
+    "independent_report_count": 2,
+    "repost_count": 2,
+    "evidence_urls": [
+     "https://x.com/myeyesnate_/status/2104578283199439169",
+     "https://x.com/faifull1996/status/2104742894758510699",
+     "https://x.com/MM_TMK539/status/2104810462340960299",
+     "https://74.rayongall.com/ry/flood-map/"
+    ],
+    "evidence_visibility": "public",
+    "private_evidence_count": 0,
+    "location_text": "ศุภาลัยวิลล์ระยอง ต.เชิงเนิน อ.เมือง จ.ระยอง",
+    "precision": "subdistrict",
+    "geocode_source": "rayong-subdistrict-210102",
     "marker_color": "#9e9e9e",
     "is_greyed": true
    }

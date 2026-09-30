@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
  "name": "rayong_floods",
- "generated_at": "2026-09-30T10:18:38+07:00",
+ "generated_at": "2026-09-30T11:13:45+07:00",
  "bbox": [
   100.9844476,
   12.2159732,
@@ -9,38 +9,6 @@
   13.1635573
  ],
  "features": [
-  {
-   "type": "Feature",
-   "id": "inc-1047-permpoon-vet-hospital-front",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     101.2652859,
-     12.6865146
-    ]
-   },
-   "properties": {
-    "incident_id": "inc-1047-permpoon-vet-hospital-front",
-    "title": "น้ำท่วมขังถนนหน้าโรงพยาบาลสัตว์เพิ่มพูน (รย.5037)",
-    "status": "active",
-    "severity": "unknown",
-    "passability": "unknown",
-    "last_reported_at": "2026-09-29T10:44:00+07:00",
-    "first_reported_at": "2026-09-29T10:44:00+07:00",
-    "independent_report_count": 1,
-    "repost_count": 0,
-    "evidence_urls": [
-     "https://www.facebook.com/prempoonpetcilnicrayong/posts/pfbid0pmQv8HMmY8v5xBQn6Lhq6MGE19qRdMprF9TRdcZHKmdzwA9kUgtH7Pk9HmWq5Q96l"
-    ],
-    "evidence_visibility": "public",
-    "private_evidence_count": 0,
-    "location_text": "บริเวณถนนหน้าโรงพยาบาลสัตว์เพิ่มพูน",
-    "precision": "point",
-    "geocode_source": "https://www.openstreetmap.org/node/6648426817",
-    "marker_color": "#757575",
-    "is_greyed": false
-   }
-  },
   {
    "type": "Feature",
    "id": "inc-e2e01-soi-nong-chok-school-choeng-noen",
@@ -484,6 +452,38 @@
     "location_text": "ถนนเส้นหลังเซ็นทรัลระยอง (check-in: หนองมะหาด ต.ทับมา); หลังเซนทรัล",
     "precision": "road_segment",
     "geocode_source": "https://nominatim.openstreetmap.org/lookup?osm_ids=W349155419&format=jsonv2",
+    "marker_color": "#9e9e9e",
+    "is_greyed": true
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "inc-1047-permpoon-vet-hospital-front",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     101.2652859,
+     12.6865146
+    ]
+   },
+   "properties": {
+    "incident_id": "inc-1047-permpoon-vet-hospital-front",
+    "title": "น้ำท่วมขังถนนหน้าโรงพยาบาลสัตว์เพิ่มพูน (รย.5037)",
+    "status": "stale",
+    "severity": "unknown",
+    "passability": "unknown",
+    "last_reported_at": "2026-09-29T10:44:00+07:00",
+    "first_reported_at": "2026-09-29T10:44:00+07:00",
+    "independent_report_count": 1,
+    "repost_count": 0,
+    "evidence_urls": [
+     "https://www.facebook.com/prempoonpetcilnicrayong/posts/pfbid0pmQv8HMmY8v5xBQn6Lhq6MGE19qRdMprF9TRdcZHKmdzwA9kUgtH7Pk9HmWq5Q96l"
+    ],
+    "evidence_visibility": "public",
+    "private_evidence_count": 0,
+    "location_text": "บริเวณถนนหน้าโรงพยาบาลสัตว์เพิ่มพูน",
+    "precision": "point",
+    "geocode_source": "https://www.openstreetmap.org/node/6648426817",
     "marker_color": "#9e9e9e",
     "is_greyed": true
    }

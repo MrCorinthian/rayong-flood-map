@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
  "name": "rayong_floods",
- "generated_at": "2026-09-30T09:07:20+07:00",
+ "generated_at": "2026-09-30T10:14:07+07:00",
  "bbox": [
   100.9844476,
   12.2159732,
@@ -72,41 +72,6 @@
     "precision": "road_segment",
     "geocode_source": "https://nominatim.openstreetmap.org/lookup?osm_ids=N3003528936&format=jsonv2",
     "marker_color": "#d32f2f",
-    "is_greyed": false
-   }
-  },
-  {
-   "type": "Feature",
-   "id": "inc-1047-ban-laeng-junction-choeng-noen",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     101.2995591,
-     12.6841316
-    ]
-   },
-   "properties": {
-    "incident_id": "inc-1047-ban-laeng-junction-choeng-noen",
-    "title": "น้ำจากทับมารวมที่แยกบ้านแลง เชิงเนิน, น้ำจากชากใหญ่เพิ่มสูงขึ้น (backfill 10:00)",
-    "status": "active",
-    "severity": "unknown",
-    "passability": "large_vehicles_only",
-    "last_reported_at": "2026-09-29T13:00:00+07:00",
-    "first_reported_at": "2026-09-29T10:00:00+07:00",
-    "independent_report_count": 2,
-    "repost_count": 2,
-    "evidence_urls": [
-     "https://www.facebook.com/Social.RayongTH/posts/pfbid0iVCQUPKPRc8np6h3KLKuvX1GRzfCcBqJhUvit5Cc177PmDTCUczr6pZqcx6PWmUgl",
-     "https://www.facebook.com/bunyisa.ponpal/posts/pfbid02eX6EsNqBkngWSAenofk1PGQBt5EdFiBjLdRe5kVpHfD3w5UcvB28Ybu7ouCeQAZdl",
-     "https://www.facebook.com/ZoomRayong/posts/pfbid02gDhz79iaEZK1X3u4nWEyqMTjjNhkEa7xcpKFeXS8HCaWCG35DSWTYPjz5oXYAU2Gl",
-     "https://www.facebook.com/prdrayong/posts/pfbid036x5BrzQXSStj4iqmh2r6rrAuvsCcUF4mLtNTwLCwZCVVzP3DBrC5RFD4W9wx69k3l"
-    ],
-    "evidence_visibility": "public",
-    "private_evidence_count": 0,
-    "location_text": "แยกบ้านแลง เชิงเนิน; ฝั่งทับมา; ทางชากใหญ่",
-    "precision": "point",
-    "geocode_source": "rayong-osm-n1882547194",
-    "marker_color": "#757575",
     "is_greyed": false
    }
   },
@@ -243,6 +208,42 @@
     "precision": "point",
     "geocode_source": "rayong-osm-n2751930266",
     "marker_color": "#757575",
+    "is_greyed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "inc-1047-ban-laeng-junction-choeng-noen",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     101.2995591,
+     12.6841316
+    ]
+   },
+   "properties": {
+    "incident_id": "inc-1047-ban-laeng-junction-choeng-noen",
+    "title": "น้ำจากทับมารวมที่แยกบ้านแลง เชิงเนิน, น้ำจากชากใหญ่เพิ่มสูงขึ้น (backfill 10:00)",
+    "status": "active",
+    "severity": "severe",
+    "passability": "large_vehicles_only",
+    "last_reported_at": "2026-09-30T06:30:00+07:00",
+    "first_reported_at": "2026-09-29T10:00:00+07:00",
+    "independent_report_count": 3,
+    "repost_count": 2,
+    "evidence_urls": [
+     "https://www.facebook.com/Social.RayongTH/posts/pfbid0iVCQUPKPRc8np6h3KLKuvX1GRzfCcBqJhUvit5Cc177PmDTCUczr6pZqcx6PWmUgl",
+     "https://www.facebook.com/bunyisa.ponpal/posts/pfbid02eX6EsNqBkngWSAenofk1PGQBt5EdFiBjLdRe5kVpHfD3w5UcvB28Ybu7ouCeQAZdl",
+     "https://www.facebook.com/ZoomRayong/posts/pfbid02gDhz79iaEZK1X3u4nWEyqMTjjNhkEa7xcpKFeXS8HCaWCG35DSWTYPjz5oXYAU2Gl",
+     "https://www.facebook.com/prdrayong/posts/pfbid036x5BrzQXSStj4iqmh2r6rrAuvsCcUF4mLtNTwLCwZCVVzP3DBrC5RFD4W9wx69k3l",
+     "https://x.com/mymelody1402/status/2105123232705806653"
+    ],
+    "evidence_visibility": "public",
+    "private_evidence_count": 0,
+    "location_text": "แยกบ้านแลง เชิงเนิน; ฝั่งทับมา; ทางชากใหญ่",
+    "precision": "point",
+    "geocode_source": "rayong-osm-n1882547194",
+    "marker_color": "#d32f2f",
     "is_greyed": false
    }
   },

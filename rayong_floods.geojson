@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
  "name": "rayong_floods",
- "generated_at": "2026-09-30T11:13:45+07:00",
+ "generated_at": "2026-09-30T13:20:59+07:00",
  "bbox": [
   100.9844476,
   12.2159732,
@@ -9,40 +9,6 @@
   13.1635573
  ],
  "features": [
-  {
-   "type": "Feature",
-   "id": "inc-e2e01-soi-nong-chok-school-choeng-noen",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     101.3033141,
-     12.6740793
-    ]
-   },
-   "properties": {
-    "incident_id": "inc-e2e01-soi-nong-chok-school-choeng-noen",
-    "title": "น้ำท่วม ม.5 เชิงเนิน ซอยโรงเรียนหนองจอก",
-    "status": "active",
-    "severity": "severe",
-    "passability": "unknown",
-    "last_reported_at": "2026-09-29T12:42:52+07:00",
-    "first_reported_at": "2026-09-29T07:07:00+07:00",
-    "independent_report_count": 3,
-    "repost_count": 0,
-    "evidence_urls": [
-     "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=2105320403685132",
-     "https://74.rayongall.com/ry/flood-map/",
-     "https://x.com/p_piglettt/status/2104806248956973305"
-    ],
-    "evidence_visibility": "public",
-    "private_evidence_count": 0,
-    "location_text": "ม.5 เชิงเนิน ซ.รร.หนองจอก",
-    "precision": "road_segment",
-    "geocode_source": "https://nominatim.openstreetmap.org/lookup?osm_ids=N3003528936&format=jsonv2",
-    "marker_color": "#d32f2f",
-    "is_greyed": false
-   }
-  },
   {
    "type": "Feature",
    "id": "inc-e2e01-lotus-rayong-hospital-junction",
@@ -216,42 +182,6 @@
   },
   {
    "type": "Feature",
-   "id": "inc-1047-ban-laeng-junction-choeng-noen",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     101.2995591,
-     12.6841316
-    ]
-   },
-   "properties": {
-    "incident_id": "inc-1047-ban-laeng-junction-choeng-noen",
-    "title": "น้ำจากทับมารวมที่แยกบ้านแลง เชิงเนิน, น้ำจากชากใหญ่เพิ่มสูงขึ้น (backfill 10:00)",
-    "status": "active",
-    "severity": "severe",
-    "passability": "large_vehicles_only",
-    "last_reported_at": "2026-09-30T06:30:00+07:00",
-    "first_reported_at": "2026-09-29T10:00:00+07:00",
-    "independent_report_count": 3,
-    "repost_count": 2,
-    "evidence_urls": [
-     "https://www.facebook.com/Social.RayongTH/posts/pfbid0iVCQUPKPRc8np6h3KLKuvX1GRzfCcBqJhUvit5Cc177PmDTCUczr6pZqcx6PWmUgl",
-     "https://www.facebook.com/bunyisa.ponpal/posts/pfbid02eX6EsNqBkngWSAenofk1PGQBt5EdFiBjLdRe5kVpHfD3w5UcvB28Ybu7ouCeQAZdl",
-     "https://www.facebook.com/ZoomRayong/posts/pfbid02gDhz79iaEZK1X3u4nWEyqMTjjNhkEa7xcpKFeXS8HCaWCG35DSWTYPjz5oXYAU2Gl",
-     "https://www.facebook.com/prdrayong/posts/pfbid036x5BrzQXSStj4iqmh2r6rrAuvsCcUF4mLtNTwLCwZCVVzP3DBrC5RFD4W9wx69k3l",
-     "https://x.com/mymelody1402/status/2105123232705806653"
-    ],
-    "evidence_visibility": "public",
-    "private_evidence_count": 0,
-    "location_text": "แยกบ้านแลง เชิงเนิน; ฝั่งทับมา; ทางชากใหญ่",
-    "precision": "point",
-    "geocode_source": "rayong-osm-n1882547194",
-    "marker_color": "#d32f2f",
-    "is_greyed": false
-   }
-  },
-  {
-   "type": "Feature",
    "id": "inc-e2e01-klaeng-hospital-transfer",
    "geometry": {
     "type": "Point",
@@ -303,25 +233,99 @@
     "incident_id": "inc-e2e01-koh-kloi-junction",
     "title": "น้ำท่วมสูง แยกเกาะกลอย (รถใหญ่จากบ้านค่ายถูกห้ามผ่าน)",
     "status": "active",
-    "severity": "unknown",
-    "passability": "all_vehicles",
-    "last_reported_at": "2026-09-30T09:21:40+07:00",
+    "severity": "severe",
+    "passability": "large_vehicles_only",
+    "last_reported_at": "2026-09-30T11:00:00+07:00",
     "first_reported_at": "2026-09-29T07:02:00+07:00",
-    "independent_report_count": 8,
+    "independent_report_count": 10,
     "repost_count": 0,
     "evidence_urls": [
      "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=961592686351770",
      "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=1410433880525078",
      "https://74.rayongall.com/ry/flood-map/",
      "https://www.facebook.com/prdrayong/posts/pfbid036x5BrzQXSStj4iqmh2r6rrAuvsCcUF4mLtNTwLCwZCVVzP3DBrC5RFD4W9wx69k3l",
-     "https://www.facebook.com/newsradiorayong/posts/pfbid0299ddKQ7etPKJ3RvQJGJvyxhvPiRoYrKgofnGdiWCeAE3hrC5VFtZcqmstzejhZDol"
+     "https://www.facebook.com/newsradiorayong/posts/pfbid0299ddKQ7etPKJ3RvQJGJvyxhvPiRoYrKgofnGdiWCeAE3hrC5VFtZcqmstzejhZDol",
+     "https://www.facebook.com/prdrayong/posts/pfbid02pmQt6J6hwoKi6dZSRynrDBU1YGfvLHQgsKoW2cP9vt6UMuGVvVmGY9bvJEXLyELkl",
+     "https://x.com/Ruamduay/status/2105142509932515440",
+     "https://facebook.com/share/p/19VhyUcfcr3/",
+     "https://x.com/XDaddyLove/status/2105166489980694616"
     ],
     "evidence_visibility": "mixed",
     "private_evidence_count": 1,
     "location_text": "แยกเกาะกลอย / จุดกลับรถแยกเกาะกลอย",
     "precision": "point",
     "geocode_source": "rayong-osm-n1634530796",
+    "marker_color": "#d32f2f",
+    "is_greyed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "inc-1249-ban-don-junction-choeng-noen",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     101.2890605,
+     12.6943785
+    ]
+   },
+   "properties": {
+    "incident_id": "inc-1249-ban-don-junction-choeng-noen",
+    "title": "สี่แยกบ้านดอน ต.เชิงเนิน ยังมีน้ำท่วมขัง",
+    "status": "active",
+    "severity": "unknown",
+    "passability": "unknown",
+    "last_reported_at": "2026-09-30T11:10:00+07:00",
+    "first_reported_at": "2026-09-30T11:10:00+07:00",
+    "independent_report_count": 1,
+    "repost_count": 0,
+    "evidence_urls": [
+     "https://www.facebook.com/prdrayong/posts/pfbid0ATyHNHaHFU7GufDcfbCP8BKTzNEWUrQAUkJJJ6AwXXGbAdvQgurT4TStDaMETyeNl"
+    ],
+    "evidence_visibility": "public",
+    "private_evidence_count": 0,
+    "location_text": "สี่แยกบ้านดอน ตำบลเชิงเนิน อำเภอเมืองระยอง",
+    "precision": "point",
+    "geocode_source": "rayong-osm-n2751574370",
     "marker_color": "#757575",
+    "is_greyed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "inc-1047-ban-laeng-junction-choeng-noen",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     101.2995591,
+     12.6841316
+    ]
+   },
+   "properties": {
+    "incident_id": "inc-1047-ban-laeng-junction-choeng-noen",
+    "title": "น้ำจากทับมารวมที่แยกบ้านแลง เชิงเนิน, น้ำจากชากใหญ่เพิ่มสูงขึ้น (backfill 10:00)",
+    "status": "active",
+    "severity": "severe",
+    "passability": "large_vehicles_only",
+    "last_reported_at": "2026-09-30T11:20:00+07:00",
+    "first_reported_at": "2026-09-29T10:00:00+07:00",
+    "independent_report_count": 5,
+    "repost_count": 3,
+    "evidence_urls": [
+     "https://www.facebook.com/Social.RayongTH/posts/pfbid0iVCQUPKPRc8np6h3KLKuvX1GRzfCcBqJhUvit5Cc177PmDTCUczr6pZqcx6PWmUgl",
+     "https://www.facebook.com/bunyisa.ponpal/posts/pfbid02eX6EsNqBkngWSAenofk1PGQBt5EdFiBjLdRe5kVpHfD3w5UcvB28Ybu7ouCeQAZdl",
+     "https://www.facebook.com/ZoomRayong/posts/pfbid02gDhz79iaEZK1X3u4nWEyqMTjjNhkEa7xcpKFeXS8HCaWCG35DSWTYPjz5oXYAU2Gl",
+     "https://www.facebook.com/prdrayong/posts/pfbid036x5BrzQXSStj4iqmh2r6rrAuvsCcUF4mLtNTwLCwZCVVzP3DBrC5RFD4W9wx69k3l",
+     "https://x.com/mymelody1402/status/2105123232705806653",
+     "https://www.facebook.com/prdrayong/posts/pfbid028LEbBSZTyTuHna32oBXB9xeM4HgQo1xokZNDzkPuEniyvEc9feMNtnV6BuNfQvH5l",
+     "https://x.com/js100radio/status/2105152573099647122"
+    ],
+    "evidence_visibility": "mixed",
+    "private_evidence_count": 1,
+    "location_text": "แยกบ้านแลง เชิงเนิน; ฝั่งทับมา; ทางชากใหญ่",
+    "precision": "point",
+    "geocode_source": "rayong-osm-n1882547194",
+    "marker_color": "#d32f2f",
     "is_greyed": false
    }
   },
@@ -484,6 +488,40 @@
     "location_text": "บริเวณถนนหน้าโรงพยาบาลสัตว์เพิ่มพูน",
     "precision": "point",
     "geocode_source": "https://www.openstreetmap.org/node/6648426817",
+    "marker_color": "#9e9e9e",
+    "is_greyed": true
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "inc-e2e01-soi-nong-chok-school-choeng-noen",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     101.3033141,
+     12.6740793
+    ]
+   },
+   "properties": {
+    "incident_id": "inc-e2e01-soi-nong-chok-school-choeng-noen",
+    "title": "น้ำท่วม ม.5 เชิงเนิน ซอยโรงเรียนหนองจอก",
+    "status": "stale",
+    "severity": "severe",
+    "passability": "unknown",
+    "last_reported_at": "2026-09-29T12:42:52+07:00",
+    "first_reported_at": "2026-09-29T07:07:00+07:00",
+    "independent_report_count": 3,
+    "repost_count": 0,
+    "evidence_urls": [
+     "https://www.facebook.com/Social.RayongTH/posts/pfbid02gN1PCZ5Snrbr6nagVZJCitrdPPy4H4U61S5nQVdR29Xo82LvNuvZTddqQyzma5aDl?comment_id=2105320403685132",
+     "https://74.rayongall.com/ry/flood-map/",
+     "https://x.com/p_piglettt/status/2104806248956973305"
+    ],
+    "evidence_visibility": "public",
+    "private_evidence_count": 0,
+    "location_text": "ม.5 เชิงเนิน ซ.รร.หนองจอก",
+    "precision": "road_segment",
+    "geocode_source": "https://nominatim.openstreetmap.org/lookup?osm_ids=N3003528936&format=jsonv2",
     "marker_color": "#9e9e9e",
     "is_greyed": true
    }
